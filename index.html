@@ -1,10 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>Кинотеатр</title>
-    <meta http-equiv="refresh" content="0; url=client/index.html">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кинотеатр - Главная</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            text-align: center;
+            color: white; 
+        }
+
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('./client/img/fon_k.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -1;
+        }
+
+        .links { 
+            margin: 30px 0; 
+        }
+
+
+        a { 
+            display: block; 
+            margin: 10px; 
+            padding: 15px; 
+            background: #16A6AF; 
+            color: white; 
+            text-decoration: none; 
+            border-radius: 5px;
+        }
+        a:hover { 
+            background: #11868f; 
+        }
+    </style>
 </head>
 <body>
-    <p>Redirecting to <a href="client/index.html">client site</a></p>
+    <h1>Кинотеатр - Дипломный проект</h1>
+    
+    <div class="links">
+        <a href="./client/index.html">Клиентская часть (посетители)</a>
+        <a href="./admin/login.html">Админская часть</a>
+    </div>
+    
 </body>
 </html>
