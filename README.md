@@ -56,50 +56,49 @@ Modular CSS - БЭМ-методология
 ### Структура проекта
 
 
-diplom_project/ 
-├──  admin/ 
-│   ├──  css/ 
-│   │   ├──  header.css 
-│   │   ├──  index.css 
-│   │   ├──  login.css 
-│   │   ├──  popup_add_film.css 
-│   │   ├──  popup_add_hall.css 
-│   │   └──  popup_add_seans.css 
-│   ├──  html/ 
-│   │   ├──  index.html 
-│   │   └──  login.html 
-│   ├──  img/ 
-│   ├──  js/ 
-│   │   ├──  api.js 
-│   │   ├──  index.js 
-│   │   └──  login.js 
-├──  client/ 
-│   ├──  css/ 
-│   │   ├──  booking.css 
-│   │   ├──  header.css 
-│   │   ├──  payment.css 
-│   │   ├──  schedule.css 
-│   │   ├──  styles.css 
-│   │   └──  ticket.css 
-│   ├──  html/ 
-│   │   ├──  booking.html 
-│   │   ├──  ingex.html 
-│   │   ├──  payment.html 
-│   │   └──  ticket.html 
-│   ├──  img/ 
-│   ├──  js/ 
-│   │   ├──  api.js  
-│   │   ├──  booking.js 
-│   │   ├──  payment.js 
-│   │   ├──  QRCreator.js 
-│   │   ├──  schedule.js 
-│   │   └──  ticket.js 
-│   └──  README.md 
+**diplom_project_daria/**  
+├── **admin/**  
+│   ├── **css/**  
+│   │   ├── header.css  
+│   │   ├── index.css  
+│   │   ├── login.css  
+│   │   ├── popup_add_film.css  
+│   │   ├── popup_add_hall.css  
+│   │   └── popup_add_seans.css  
+│   ├── **html/**  
+│   │   ├── index.html  
+│   │   └── login.html  
+│   ├── **img/**  
+│   └── **js/**  
+│       ├── api.js  
+│       ├── index.js  
+│       └── login.js  
+└── **client/**  
+    ├── **css/**  
+    │   ├── booking.css  
+    │   ├── header.css  
+    │   ├── payment.css  
+    │   ├── schedule.css  
+    │   ├── styles.css  
+    │   └── ticket.css  
+    ├── **html/**  
+    │   ├── booking.html  
+    │   ├── index.html  
+    │   ├── payment.html  
+    │   └── ticket.html  
+    ├── **img/**  
+    └── **js/**  
+        ├── api.js  
+        ├── booking.js  
+        ├── payment.js  
+        ├── QRCreator.js  
+        ├── schedule.js  
+        └── ticket.js 
 
 
 ### Страницы приложения
 
-# Клиентские страницы
+#### Клиентские страницы
 
 - index.html - Главная страница с расписанием
   
@@ -110,7 +109,7 @@ diplom_project/
 - ticket.html - Получение билета
   
 
-# Админские страницы  
+#### Админские страницы  
 
 - login.html - Страница входа
   
