@@ -1,0 +1,66 @@
+.header {
+    display: block;
+    position: block;
+
+    align-items: center;
+    color: #fff;
+    position: relative;
+    max-width: 972px;
+    margin: auto ;
+    text-decoration: none;
+    box-sizing: border-box;
+    margin-bottom: 25px;
+    padding: 25px 0px 0px 104px;
+
+} 
+
+
+/* Логотип "ИДЁМВКИНО" */
+.header__title {
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    font-size: 34px;
+    margin: 0;
+    font-weight: 900;
+    line-height: 39px;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+/* Буква "В" — тонкая */
+.header__title .bykva {
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 100;
+    display: inline-block;
+    position: relative;
+    text-decoration: none;
+}
+
+
+.header__admin{
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    display: inline-block;
+    font-weight: 300;
+    text-decoration: none;
+
+    font-style: Regular;
+    font-size: 10px;
+    line-height: 12px;
+    letter-spacing: 5px;
+    vertical-align: middle;
+    margin-top: -45px;
+}
+
+
+
+
+
+@media (max-width: 390px) {
+    .header {
+        margin-left: -15%;;
+    }
+    
+}

@@ -1,0 +1,74 @@
+.header {
+    display: flex;
+    position: block;
+    justify-content: space-between;
+    align-items: center;
+
+    color: #fff;
+    position: relative;
+    max-width: 962px;
+    padding: 15px;
+    margin: auto;
+    margin-bottom: -20px;
+    text-decoration: none;
+}
+
+
+/* Логотип "ИДЁМВКИНО" */
+.header__title {
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    font-size: 34px;
+    margin: 0;
+    font-weight: 900;
+    line-height: 39px;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+/* Буква "В" — тонкая */
+.header__title .bykva {
+    color: #fff;
+    font-weight: 100;
+    color: inherit;
+    display: inline-block;
+    position: relative;
+    text-decoration: none;
+}
+
+
+/* Кнопка "ВОЙТИ" */
+.header__login {
+    font-family: 'Arial', sans-serif;
+    background-color: #16A6AF;
+    cursor: pointer;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+    width: 71;
+    height: 40;
+    padding: 12px;
+    opacity: 1;
+    border-radius: 3px;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 0%;
+    text-align: center;
+    vertical-align: middle;
+    text-transform: uppercase;
+    box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.3);
+
+}
+
+.header__login:hover {
+    background-color: #0b737a;
+}
+
+

@@ -1,0 +1,956 @@
+body, html {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', Arial, sans-serif;
+  color: #333;
+  position: relative;
+  min-height: 100vh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../img/fon_a.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1;
+  filter: brightness(0.5);
+}
+
+.main { 
+  margin: 0 auto;
+  padding: 20px;
+}
+
+
+.index-container {
+  max-width: 962px;
+  margin: 0 auto;
+  background-color: #EAE9EBF2;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  padding: 0;
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+
+.index-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 95px;
+    background-color: #63536C;
+    padding: 0 20px;
+    padding: 0px 40px 0px 100px;
+    box-sizing: border-box;
+}
+
+
+.index-title {  
+  line-height: 57px;
+  color: #FFFFFF;
+  background-color: #63536C;
+  font-family: Roboto;
+  font-weight: 600;
+  font-size: 22px;
+}
+
+
+.strelka {
+  width: 24px;
+  height: auto;
+  margin-right: 50px;
+  cursor: pointer;
+}
+
+
+.index-info-container{
+  display: block;
+  text-align: left;
+  padding-left: 100px;
+  padding-top: 15px;
+}
+
+.index-info{
+  color: #000000;
+}
+
+.free-hall{
+  display: flex;
+  font-family: Roboto;
+  font-weight: 500;
+  font-style: Medium;
+  font-size: 16px;
+  line-height: 18px;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  text-transform: uppercase;
+  margin-top: -15px;
+  margin-left: 10px;
+  color: #000000;
+}
+
+.mysorka-box{
+  width: 20px;
+  height: 20px;
+  opacity: 1;
+  border-radius: 3px;
+  background-color: #ffffff;
+  margin: auto 5px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+
+.mysorka{
+  width: 20px;
+  height: auto;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+
+.info-label {
+  display: block;
+  font-family: Roboto;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 18.4px;
+  margin-bottom: 5px;
+  color: #848484;
+  margin: 3px auto;
+  width: 272px;
+}
+
+.info-value {
+  display: block;
+  height: 40px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  border: 1px solid #B7B7B7;
+  border-radius: 1px;
+  font-family: Roboto;
+  font-size: 16px;
+  margin: auto;
+}
+
+
+
+.button_place {
+  display: block;
+  height: 70px;
+  padding: 0 0px;
+  margin: 20px 5px auto;
+  display: inline-block;
+  padding-top: 10px;
+}
+
+
+.index-button {
+  max-width: 198px;
+  min-width: 150px;
+  height: 40px;
+  background: #16A6AF;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-family: Roboto;
+  font-weight: 500;
+  font-size: 14px;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.4);
+  padding: auto 30%;
+
+}
+
+.index-button-no {
+  max-width: 198px;
+  min-width: 150px;
+  height: 40px;
+  background: #ffffff;
+  color: #63536C;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-family: Roboto;
+  font-weight: 500;
+  font-size: 14px;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.4);
+  margin: auto;
+}
+
+.index-button:hover{
+  background-color: #0e7a81;
+}
+
+.index-button-no:hover{
+  background-color: #c5c5c5;
+  color: #2a2a2a;
+}
+
+
+
+
+
+/* Конфигурация залов */
+.choose-hall {
+  margin-bottom: 40px;
+}
+
+.list-hall {
+  display: flex;
+  gap: 1px;
+  margin: 15px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list-hall-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 46px;
+  background-color: #EAE9EBF2;
+  color: #000000;
+  border-radius: 3px;
+  font-family: Roboto;
+  font-weight: 600;
+  font-size: 15px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.list-hall-num.active {
+  background-color: #FFFFFF;
+  color: #000000;
+  transform: scale(1.1);
+  font-weight: 900;
+}
+
+
+
+.row-seat {
+  display: flex;
+  max-width: 25%;
+  gap: 15px;
+  margin: 15px 0;
+}
+
+.info-row {
+  min-width: 80px;
+}
+
+.row-seat .info-value {
+  width: 100px;
+  max-width: 100px;
+}
+
+.info-label {
+  font-family: Roboto;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 12px;
+  color: #848484;
+
+}
+
+.info-label-x{
+  font-family: Roboto;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 12px;
+  color: #848484;
+  margin-top: 40px;
+  margin-left: 20px;
+}
+
+
+.info-value {
+  display: block;
+  width: 100px;
+  height: 40px;
+  padding: 0 10px;
+  border: 1px solid #B7B7B7;
+  border-radius: 1px;
+  font-family: Roboto;
+  font-size: 16px;
+  margin: 0;
+}
+
+.type-seat {
+  margin: 30px 0;
+}
+
+.legend {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.info-type-seat{
+  color: #848484;
+  font-family: Roboto;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  margin-left: 3px;
+}
+
+.seat-sample {
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+}
+
+.seat-sample.basic {
+  background-color: #C4C4C4;
+  border: 1px solid #393939;
+}
+
+.seat-sample.vip {
+  border: 1px solid #0A828A;
+  background: #B0D6D8 url('../img/vip_seat.png') repeat;
+}
+
+.seat-sample.block {
+  border: 1px solid #999999;
+}
+
+.index-info-instruction {
+  font-family: Roboto;
+  font-weight: 400;
+  font-size: 14px;
+  color: #848484;
+  margin: 15px 0;
+}
+
+.cinema-hall {
+  width: 760px;
+  margin: 30px 0;
+  text-align: center;
+  border: 1px solid #000000;
+  padding: 20px;
+  padding-bottom: 40px;
+  margin-bottom: -10px;
+  box-sizing: border-box;
+  width: 90%;
+
+}
+
+.screen-title {
+  font-family: Roboto;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 16px;
+  line-height: 18px;
+  letter-spacing: 19px;
+  text-align: center;
+  vertical-align: middle;
+  text-transform: uppercase;
+  font-family: Roboto;
+  font-size: 16px;
+  text-transform: uppercase;
+  margin-bottom: 30px;
+  color: #000000;
+}
+
+.seats-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.seat-row-1,
+.seat-row-2,
+.seat-row-3,
+.seat-row-4,
+.seat-row-5,
+.seat-row-6,
+.seat-row-7,
+.seat-row-8,
+.seat-row-9,
+.seat-row-10 {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.seat {
+  width: 24px;
+  height: 24px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Roboto;
+  font-weight: 400;
+  font-size: 12px;
+  cursor: pointer;
+  border: 1px solid #393939;
+  background-color: #C4C4C4;
+  transition: all 0.2s ease;
+  color: transparent;  
+}
+
+.seat.vip {
+  border: 1px solid #0A828A;
+  background: #B0D6D8 url('../img/vip_seat.png') repeat;
+}
+
+.seat.blocked {
+  background-color: #e3e3e3f2;
+  border: 1px solid #C4C4C4;
+}
+
+.seat:hover:not(.blocked) {
+  transform: scale(1.1);
+}
+
+
+/* установка цены */
+.make-price {
+    margin: 0;
+    padding: 0;
+}
+
+.row-make-price {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    margin: 10px 0;
+    padding: 0;
+    margin-right: 75%;
+   
+    gap: 5px;
+}
+
+.info-row {
+    margin: 0;
+    padding: 0;
+}
+
+.info-place {
+    display: flex;
+    margin-top: 20px;
+    padding: 0;
+    gap: 10px;
+    margin-left: 10%;
+    padding-left: 15px;
+}
+
+.info-lable-seat {
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+}
+
+.row-make-price .info-value {
+  width: 100px; 
+  max-width: 100px;
+}
+
+/* сетка сеансов */
+
+.list-film-seans{
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  margin-bottom: 2px;
+  gap: 15px;
+
+}
+
+.film-seans{
+  position: relative;
+  display: flex;
+  border-radius: 3px;
+  border: 1px solid #0000004D;
+  width: 260px;
+  height: 55px;
+  box-sizing: border-box;
+  background-color: #0000002c;
+  flex-shrink: 0;
+}
+
+.info-film-seans{
+  margin: auto 10px;
+}
+
+.foto-film-seans{
+  width: 38px;
+  height: auto;
+  border-radius: 3px;
+  border-right: 1px solid #0000004D;
+}
+
+
+.name-film-seans{
+  font-family: Roboto;
+  font-weight: 500;
+  font-style: Medium;
+  font-size: 14px;
+  line-height: 16px;
+  vertical-align: middle;
+}
+
+.time-film-seans{
+  font-family: Roboto;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  margin-top: 5px;
+}
+
+.mysorka-box-seans{
+  position: absolute;
+  right: -5px;
+  bottom: 0px;
+}
+
+
+.hall-seans-container{
+  display: block;
+  max-width: 800px;
+  
+} 
+
+.hall-seans{
+  margin-top: 5px;
+  margin-bottom: 2px;
+}
+
+.hall-num-seans{
+  font-family: Roboto;
+  font-weight: 500;
+  font-style: Medium;
+  font-size: 16px;
+  line-height: 18px;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  text-transform: uppercase;
+  margin-bottom: 0px;
+}
+
+.num-hall-container{
+  width: 95%;
+  position: relative;
+  display: flex;
+  border-radius: 1px;
+  border: 1px solid #0000004D;
+  height: 60px;
+  box-sizing: border-box;
+  overflow-x: auto; /* Горизонтальная прокрутка */
+  padding-bottom: 5px;
+  scrollbar-width: thin;
+  scrollbar-color: #63536C #EAE9EBF2;
+  padding-bottom: 15px;
+
+}
+
+.film-seans-name{
+  font-family: Roboto;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 10px;
+  line-height: 10px;
+  margin: auto;
+  margin-left: 10px;
+}
+
+.film-seans-place{
+  display: flex;
+  border-radius: 1px;
+  border: 1px solid #0000004D;
+  width: 72px;
+  height: 40px;
+  box-sizing: border-box;
+  background-color: #0000002c;
+  margin: auto 0;
+}
+
+
+.text-ready{
+  font-family: Roboto;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 16px;
+  line-height: 18px;
+}
+
+footer{
+  height: 50px;
+}
+
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.popup-content {
+  background: white;
+  border-radius: 3px;
+  
+}
+
+.buttons_popap_container{
+  flex-wrap: wrap; 
+}
+
+
+/* Стили для перетаскивания */
+.draggable-film {
+    cursor: grab;
+    transition: all 0.3s ease;
+}
+
+.draggable-film:active {
+    cursor: grabbing;
+    transform: scale(0.95);
+}
+
+.draggable-film.dragging {
+    opacity: 0.5;
+}
+
+/* Зоны для перетаскивания */
+.drop-zone {
+    min-height: 70px;
+    border: 1px solid #0000004D;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 5px;
+    padding: 5px;
+    align-items: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 15px;
+    border-radius: 1px;
+}
+
+.drop-zone.drag-over {
+    border-color: #16A6AF;
+    background-color: rgba(22, 166, 175, 0.1);
+}
+
+.drop-zone.empty::before {
+    content: "Перетащите фильм сюда";
+    color: #848484;
+    font-size: 14px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Добавленные сеансы */
+.added-session {
+    background-color: #0000002c;
+    color: rgb(0, 0, 0);
+    padding: 8px 12px;
+    border-radius: 1px;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    min-width: 100px;
+    position: relative;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-right: 10px; 
+    margin-bottom: 25зpx;
+    border: 1px solid #0000004D;;
+}
+
+.added-session .film-name {
+    font-weight: bold;
+    margin-bottom: 4px;
+    text-align: center;
+}
+
+.added-session .session-time {
+    font-size: 11px;
+    opacity: 0.9;
+}
+
+.added-session .remove-session {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    cursor: pointer;
+    color: #ff4444;
+    display: none;
+}
+
+.added-session:hover .remove-session {
+    display: block;
+}
+
+/* Контейнер для ввода времени */
+.time-input-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 100;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.session-time-input {
+    border: 1px solid #B7B7B7;
+    border-radius: 3px;
+    padding: 5px;
+    font-size: 14px;
+}
+
+.confirm-session-btn, .cancel-session-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 2px 5px;
+}
+
+.confirm-session-btn {
+    color: #1cb661;
+}
+
+.cancel-session-btn {
+    color: #ff4444;
+}
+
+
+
+
+.draggable-film {
+    cursor: grab;
+    transition: all 0.2s ease;
+}
+
+.draggable-film:active {
+    cursor: grabbing;
+    transform: scale(0.95);
+}
+
+.draggable-film.dragging {
+    opacity: 0.6;
+}
+
+.drop-zone.drag-over {
+    background-color: rgba(22, 166, 175, 0.1);
+}
+
+.drop-zone.empty {
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.drop-zone.empty::after {
+    content: " ";
+    color: #888;
+    font-style: italic;
+    font-size: 14px;
+}
+
+/* Стили для добавленных сеансов */
+.added-session {
+    background-color: #0000002c;
+    color: rgb(0, 0, 0);
+    padding: 8px 12px;
+    border-radius: 1px;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    min-width: 100px;
+    position: relative;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    border: 1px solid #0000004D;
+}
+
+.added-session .film-name {
+    font-weight: bold;
+    margin-bottom: 4px;
+    text-align: center;
+}
+
+.added-session .session-time {
+    font-size: 11px;
+    opacity: 0.9;
+}
+
+.added-session .remove-session {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    cursor: pointer;
+    color: #ff4444;
+    display: none;
+}
+
+.added-session:hover .remove-session {
+    display: block;
+}
+
+
+
+.info-value[readonly] {
+    background-color: #f5f5f5;
+    color: #666;
+    cursor: not-allowed;
+}
+
+
+
+
+@media (max-width: 768px) {
+
+    .index-container {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .index-title {
+      width: auto;
+      font-size: 20px;
+    }
+
+    .index-info-container {
+      padding-left: 10%;
+    }
+
+    .index-title-container {
+      padding: 0 10%;
+    }
+
+    .strelka{
+      margin-right: -5%;
+      width: 20px;
+    }
+    
+    .button_place {
+        text-align: center;
+        padding: auto;
+    }
+    
+    .legend {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .cinema-hall {
+        width: 85%;
+    }
+
+    .num-hall-container{
+      width: 90%;
+    }
+
+    .list-hall {
+        flex-wrap: wrap;
+    }
+    
+    .list-film-seans {
+        flex-direction: column;
+    }
+
+}
+
+@media (max-width: 390px) {
+    .index-info-container {
+      padding: inherit 5%;
+    }
+
+    .header__title {
+        font-size: 28px;
+    }
+    
+    .header__admin {
+        font-size: 8px;
+        margin-top: -35px;
+    }
+    
+    .index-title {
+        font-size: 18px;
+    }
+
+    .index-title-container {
+        height: 65px;
+    }
+
+    .screen-title {
+        letter-spacing: 5px;
+        font-size: 14px;
+    }
+    
+    .seat {
+        width: 15px;
+        height: 15px;
+        font-size: 8px;
+    }
+}

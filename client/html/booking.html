@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Выбор мест | ИДЁМВКИНО</title>
+  <link rel="stylesheet" href="../css/booking.css">
+  <link rel="stylesheet" href="../css/header.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;500;700;900&display=swap" rel="stylesheet">
+  <script src="../js/api.js"></script>
+</head>
+<body>
+  <header class="header">
+    <a href="index.html" class="header__title">ИДЁМ<span class="bykva">В</span>КИНО</a>
+  </header>
+
+  <main class="booking-container">
+    <div class="movie-info">
+      <h2 class="movie__title">Звёздные войны XXIII: Атака клонированных клонов</h2>
+        <p class="movie__start">Начало сеанса: 18:30</p>
+        <p class="movie__hall">Зал 1</p>
+    </div>
+
+    <div class="cinema-hall">
+      <div class="screen">
+        <img src="../img/screen.png" alt="Экран в кино" class="screen-image">
+      </div>
+      
+      <!-- Схема зала - 10 рядов -->
+      <div class="seats-grid">
+
+        <!-- Ряд 1, 2места -->
+        <div class="seat-row-1">
+          <div class="seat free" data-price="250">1</div>
+          <div class="seat free" data-price="250">2</div>
+        </div>
+        
+        <!-- Ряд 2, 4места -->
+        <div class="seat-row-2">
+          <div class="seat free" data-price="250">1</div>
+          <div class="seat free" data-price="250">2</div>
+          <div class="seat free" data-price="250">3</div>
+          <div class="seat free" data-price="250">4</div>
+        </div>
+        
+        <!-- Ряд 3, 8мест -->
+        <div class="seat-row-3">
+          <div class="seat free" data-price="250">1</div>
+          <div class="seat free" data-price="250">2</div>
+          <div class="seat free" data-price="250">3</div>
+          <div class="seat free" data-price="250">4</div>
+          <div class="seat free" data-price="250">5</div>
+          <div class="seat free" data-price="250">6</div>
+          <div class="seat free" data-price="250">7</div>
+          <div class="seat free" data-price="250">8</div>
+        </div>
+        
+        <!-- Ряд 4, 9мест -->
+        <div class="seat-row-4">
+          <div class="seat free" data-price="250">1</div>
+          <div class="seat free" data-price="250">2</div>
+          <div class="seat free" data-price="250">3</div>
+          <div class="seat free" data-price="250">4</div>
+          <div class="seat free" data-price="250">5</div>
+          <div class="seat vip" data-price="350">6</div>
+          <div class="seat vip" data-price="350">7</div>
+          <div class="seat free" data-price="250">8</div>
+          <div class="seat free" data-price="250">9</div>
+        </div>
+        
+        <!-- Ряд 5, 9мест -->
+        <div class="seat-row-5">
+          <div class="seat free" data-price="250">1</div>
+          <div class="seat free" data-price="250">2</div>
+          <div class="seat free" data-price="250">3</div>
+          <div class="seat free" data-price="250">4</div>
+          <div class="seat vip" data-price="350">5</div>
+          <div class="seat vip" data-price="350">6</div>
+          <div class="seat vip" data-price="350">7</div>
+          <div class="seat vip" data-price="350">8</div>
+          <div class="seat free" data-price="250">9</div>
+        </div>
+
+        <!-- Ряд 6, 9мест -->
+        <div class="seat-row-6">
+          <div class="seat free" data-price="250">1</div>
+          <div class="seat free" data-price="250">2</div>
+          <div class="seat free" data-price="250">3</div>
+          <div class="seat free" data-price="250">4</div>
+          <div class="seat vip" data-price="350">5</div>
+          <div class="seat vip" data-price="350">6</div>
+          <div class="seat vip" data-price="350">7</div>
+          <div class="seat vip" data-price="350">8</div>
+          <div class="seat free" data-price="250">9</div>
+        </div>
+        
+        <!-- Ряд 7, 9мест -->
+        <div class="seat-row-7">
+          <div class="seat free" data-price="250">1</div>
+          <div class="seat free" data-price="250">2</div>
+          <div class="seat free" data-price="250">3</div>
+          <div class="seat free" data-price="250">4</div>
+          <div class="seat vip" data-price="350">5</div>
+          <div class="seat vip" data-price="350">6</div>
+          <div class="seat vip" data-price="350">7</div>
+          <div class="seat vip" data-price="350">8</div>
+          <div class="seat free" data-price="250">9</div>
+        </div>
+        
+        <!-- Ряд 8, 9мест -->
+        <div class="seat-row-8">
+          <div class="seat free" data-price="250">1</div>
+          <div class="seat free" data-price="250">2</div>
+          <div class="seat free" data-price="250">3</div>
+          <div class="seat free" data-price="250">4</div>
+          <div class="seat free" data-price="250">5</div>
+          <div class="seat free" data-price="250">6</div>
+          <div class="seat free" data-price="250">7</div>
+          <div class="seat free" data-price="250">8</div>
+          <div class="seat free" data-price="250">9</div>
+        </div>
+        
+        <!-- Ряд 9, 12мест -->
+        <div class="seat-row-9">
+          <div class="seat free" data-price="250">1</div>
+          <div class="seat free" data-price="250">2</div>
+          <div class="seat free" data-price="250">3</div>
+          <div class="seat free" data-price="250">4</div>
+          <div class="seat free" data-price="250">5</div>
+          <div class="seat free" data-price="250">6</div>
+          <div class="seat free" data-price="250">7</div>
+          <div class="seat free" data-price="250">8</div>
+          <div class="seat free" data-price="250">9</div>
+          <div class="seat free" data-price="250">10</div>
+          <div class="seat free" data-price="250">11</div>
+          <div class="seat free" data-price="250">12</div>
+        </div>
+        
+        <!-- Ряд 10, 12мест -->
+        <div class="seat-row-10">
+          <div class="seat free" data-price="250">1</div>
+          <div class="seat free" data-price="250">2</div>
+          <div class="seat free" data-price="250">3</div>
+          <div class="seat free" data-price="250">4</div>
+          <div class="seat free" data-price="250">5</div>
+          <div class="seat free" data-price="250">6</div>
+          <div class="seat free" data-price="250">7</div>
+          <div class="seat free" data-price="250">8</div>
+          <div class="seat free" data-price="250">9</div>
+          <div class="seat free" data-price="250">10</div>
+          <div class="seat free" data-price="250">11</div>
+          <div class="seat free" data-price="250">12</div>
+        </div>
+      </div>
+
+
+    <div class="legend">
+      <div class="legend-item">
+        <div class="seat-sample free"></div>
+        <span>Свободно (250руб)</span>
+      </div>
+      <div class="legend-item">
+        <div class="seat-sample vip"></div>
+        <span>Свободно VIP (350руб)</span>
+      </div>
+      <div class="legend-item">
+        <div class="seat-sample occupied"></div>
+        <span>Занято</span>
+      </div>
+      <div class="legend-item">
+        <div class="seat-sample selected"></div>
+        <span>Выбрано</span>
+      </div>
+    </div>
+
+    </div>
+
+    
+    <div class="button_place">
+      <button class="book-button" id="bookButton" disabled>ЗАБРОНИРОВАТЬ</button>
+    </div>
+  </main>
+
+  <script src="../js/booking.js" defer></script>
+  <script src="../js/QRCreator.js"></script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Электронный билет | ИДЁМВКИНО</title>
+  <link rel="stylesheet" href="../css/ticket.css">
+  <link rel="stylesheet" href="../css/header.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+  <script src="../js/QRCreator.js"></script>
+  <script src="../js/ticket.js" defer></script>
+  <script src="../js/api.js"></script>
+</head>
+<body>
+  <header class="header">
+    <a href="index.html" class="header__title">ИДЁМ<span class="bykva">В</span>КИНО</a>
+  </header>
+
+  <main class="ticket-container">
+
+    <div class="ticket-border">
+      <div class="border-pattern top"></div>
+    </div>
+
+    <h2 class="ticket-title">ЭЛЕКТРОННЫЙ БИЛЕТ</h2>
+
+    <div class="ticket-border">
+      <div class="border-pattern bottom"></div>
+      <div class="border-pattern top"></div>
+    </div>
+    
+    <div class="ticket-info">
+      <div class="info-row">
+        <span class="info-label">На фильм:</span>
+        <span class="info-value" id="ticketFilm"></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Места:</span>
+        <span class="info-value" id="ticketSeats"></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">В зале:</span>
+        <span class="info-value" id="ticketHall"></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Начало сеанса:</span>
+        <span class="info-value" id="ticketTime"></span>
+      </div>
+    
+
+    <div class="qr-container" id="qrCodeContainer"></div>
+
+    <div class="ticket-notice">
+      <p>Покажите QR-код нашему контроллеру для подтверждения бронирования.</p>
+      <p>Приятного просмотра!</p>
+    </div>
+
+    </div>
+
+    <div class="ticket-border">
+      <div class="border-pattern bottom"></div>
+    </div>
+
+  </main>
+
+</body>
+</html>

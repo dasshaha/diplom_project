@@ -1,0 +1,111 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  color: #333;
+  position: relative;
+  min-height: 100vh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../img/fon_a.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1;
+  filter: brightness(0.5);
+}
+
+.main {
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.login-container {
+  max-width: 480px;
+  margin: 0 auto;
+  background-color: #EAE9EBF2;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  padding: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.login-title {
+  display: block;
+  height: 57px;
+  line-height: 57px;
+  color: #FFFFFF;
+  background-color: #63536C;
+  font-family: Roboto;
+  font-weight: 600;
+  font-size: 22px;
+  margin: 0;
+}
+
+.login-info {
+  padding: 30px 40px 10px;
+  margin: auto;
+}
+
+.info-row {
+  display: block;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+
+
+.info-label {
+  display: block;
+  font-family: Roboto;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 18.4px;
+  margin-bottom: 5px;
+  color: #848484;
+  margin: 3px auto;
+  width: 272px;
+}
+
+.info-value {
+  display: block;
+  width: 272px;
+  height: 40px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  border: 1px solid #B7B7B7;
+  border-radius: 1px;
+  font-family: Roboto;
+  font-size: 16px;
+  margin: auto;
+}
+
+.button_place {
+  height: 70px;
+  padding: 0 40px;
+  margin: auto;
+}
+
+.login-button {
+  display: block;
+  width: 189px;
+  height: 40px;
+  background: #16A6AF;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-family: Roboto;
+  font-weight: 500;
+  font-size: 14px;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.4);
+  margin: auto;
+}

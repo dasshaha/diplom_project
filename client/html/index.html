@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ИДЁМВКИНО - Расписание сеансов</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/header.css">
+  <link rel="stylesheet" href="../css/schedule.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+  <script src="../js/api.js"></script>
+  <script src="../js/schedule.js" defer></script>
+  <script src="../js/booking.js"></script>
+  <script src="../js/payment.js"></script>
+  <script src="../js/ticket.js"></script>
+
+</head>
+<body>
+
+  <header class="header">
+    <a href="index.html" class="header__title">ИДЁМ<span class="bykva">В</span>КИНО</a>
+    <button class="header__login">ВОЙТИ</button>
+  </header>
+
+  <main class="main">
+    <nav class="schedule">
+      <ul class="schedule__days">
+        <li class="schedule__day">
+          <a href="index.html" class="schedule__day__num">Сегодня<br>Пн, 31</a>
+        </li>
+        <li class="schedule__day">
+          <a href="index.html" class="schedule__day__num">Вт,<br>1</a>
+        </li>
+        <li class="schedule__day">
+          <a href="index.html" class="schedule__day__num">Ср,<br>2</a>
+        </li>
+        <li class="schedule__day">
+          <a href="index.html" class="schedule__day__num">Чт,<br>3</a>
+        </li>
+        <li class="schedule__day">
+          <a href="index.html" class="schedule__day__num">Пт,<br>4</a>
+        </li>
+        <li class="schedule__day">
+          <a href="index.html" class="schedule__day__num">Сб,<br>5</a>
+        </li>
+        <li class="schedule__day">
+          <a href="index.html" class="schedule__day__num_strelka">></a>
+        </li>
+      </ul>
+    </nav>
+
+      <!-- Фильм 1 -->
+      <article class="movie">
+        <img src="../img/post1.jpg" alt="Звёздные войны" class="movie__poster">
+        <div class="movie__content">
+          <h2 class="movie__title">Звёздные войны XXIII: Атака клонированных клонов</h2>
+          <p class="movie__description">Две сотни лет назад малороссийские хутора разоряла шайка нехристей-ляхов во главе с могущественным колдуном.</p>
+          <p class="movie__info">130 минут, США</p>  
+        </div>
+        
+        
+        <div class="movie__halls">
+          <div class="hall">
+            <h3 class="hall__title">Зал 1</h3>
+            <ul class="hall__times">
+              <li><a href="booking.html?film=Звёздные%20войны%20XXIII:%20Атака%20клонированных%20клонов&time=10:20&hall=1" class="hall__time">10:20</a></li>
+              <li><a href="booking.html?film=Звёздные%20войны%20XXIII:%20Атака%20клонированных%20клонов&time=14:10&hall=1" class="hall__time">14:10</a></li>
+              <li><a href="booking.html?film=Звёздные%20войны%20XXIII:%20Атака%20клонированных%20клонов&time=18:40&hall=1" class="hall__time">18:40</a></li>
+              <li><a href="booking.html?film=Звёздные%20войны%20XXIII:%20Атака%20клонированных%20клонов&time=22:00&hall=1" class="hall__time">22:00</a></li>
+            </ul>
+          </div>
+          
+          <div class="hall">
+            <h3 class="hall__title">Зал 2</h3>
+            <ul class="hall__times">
+              <li><a href="booking.html?film=Звёздные%20войны%20XXIII:%20Атака%20клонированных%20клонов&time=11:15&hall=2" class="hall__time">11:15</a></li>
+              <li><a href="booking.html?film=Звёздные%20войны%20XXIII:%20Атака%20клонированных%20клонов&time=14:40&hall=2" class="hall__time">14:40</a></li>
+              <li><a href="booking.html?film=Звёздные%20войны%20XXIII:%20Атака%20клонированных%20клонов&time=16:00&hall=2" class="hall__time">16:00</a></li>
+              <li><a href="booking.html?film=Звёздные%20войны%20XXIII:%20Атака%20клонированных%20клонов&time=18:30&hall=2" class="hall__time">18:30</a></li>
+              <li><a href="booking.html?film=Звёздные%20войны%20XXIII:%20Атака%20клонированных%20клонов&time=21:00&hall=2" class="hall__time">21:00</a></li>
+              <li><a href="booking.html?film=Звёздные%20войны%20XXIII:%20Атака%20клонированных%20клонов&time=23:30&hall=2" class="hall__time">23:30</a></li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- Фильм 2 -->
+      <article class="movie">
+        <img src="../img/post2.jpg" alt="Альфа" class="movie__poster"> 
+        <div class="movie__content">
+          <h2 class="movie__title">Альфа</h2>
+          <p class="movie__description">20 тысяч лет назад Земля была холодным и неуютным местом, в котором смерть подстерегала человека на каждом шагу.</p>
+          <p class="movie__info">96 минут, Франция</p>
+        </div>
+        
+        <div class="movie__halls">
+          <div class="hall">
+            <h3 class="hall__title">Зал 1</h3>
+            <ul class="hall__times">
+              <li><a href="booking.html?film=Альфа&time=10:20&hall=1" class="hall__time">10:20</a></li>
+              <li><a href="booking.html?film=Альфа&time=14:10&hall=1" class="hall__time">14:10</a></li>
+              <li><a href="booking.html?film=Альфа&time=18:40&hall=1" class="hall__time">18:40</a></li>
+              <li><a href="booking.html?film=Альфа&time=22:00&hall=1" class="hall__time">22:00</a></li>
+            </ul>
+          </div>
+          
+          <div class="hall">
+            <h3 class="hall__title">Зал 2</h3>
+            <ul class="hall__times">
+              <li><a href="booking.html?film=Альфа&time=11:15&hall=2" class="hall__time">11:15</a></li>
+              <li><a href="booking.html?film=Альфа&time=14:40&hall=2" class="hall__time">14:40</a></li>
+              <li><a href="booking.html?film=Альфа&time=16:00&hall=2" class="hall__time">16:00</a></li>
+              <li><a href="booking.html?film=Альфа&time=18:30&hall=2" class="hall__time">18:30</a></li>
+              <li><a href="booking.html?film=Альфа&time=21:00&hall=2" class="hall__time">21:00</a></li>
+              <li><a href="booking.html?film=Альфа&time=23:30&hall=2" class="hall__time">23:30</a></li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- Фильм 3 -->
+      <article class="movie">
+        <img src="../img/post2.jpg" alt="Хищник" class="movie__poster">
+        <div class="movie__content">
+          <h2 class="movie__title">Хищник</h2>
+          <p class="movie__description">Самые опасные хищники Вселенной, прибыв из глубин космоса, высаживаются на улицах 
+            маленького городка, чтобы начать свою кровавую охоту. Генетически модернизировав себя с помощью ДНК других видов, 
+            охотники стали еще сильнее, умнее и беспощаднее.
+          </p>
+          <p class="movie__info">101 минута Канада, США</p>
+        </div>  
+
+
+        <div class="movie__halls">
+          <div class="hall">
+            <h3 class="hall__title">Зал 1</h3>
+            <ul class="hall__times">
+              <li><a href="booking.html?film=Хищник&time=09:00&hall=1" class="hall__time">09:00</a></li>
+              <li><a href="booking.html?film=Хищник&time=10:10&hall=1" class="hall__time">10:10</a></li>
+              <li><a href="booking.html?film=Хищник&time=12:55&hall=1" class="hall__time">12:55</a></li>
+              <li><a href="booking.html?film=Хищник&time=14:15&hall=1" class="hall__time">14:15</a></li>
+              <li><a href="booking.html?film=Хищник&time=14:50&hall=1" class="hall__time">14:50</a></li>
+              <li><a href="booking.html?film=Хищник&time=16:30&hall=1" class="hall__time">16:30</a></li>
+              <li><a href="booking.html?film=Хищник&time=18:00&hall=1" class="hall__time">18:00</a></li>
+              <li><a href="booking.html?film=Хищник&time=18:50&hall=1" class="hall__time">18:50</a></li>
+              <li><a href="booking.html?film=Хищник&time=19:50&hall=1" class="hall__time">19:50</a></li>
+              <li><a href="booking.html?film=Хищник&time=20:55&hall=1" class="hall__time">20:55</a></li>
+              <li><a href="booking.html?film=Хищник&time=22:00&hall=1" class="hall__time">22:00</a></li>
+            </ul>
+          </div>
+        </div>
+
+      </article>
+
+  </main>
+</body>
+</html>

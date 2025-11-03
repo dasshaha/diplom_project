@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Подтверждение бронирования | ИДЁМВКИНО</title>
+  <link rel="stylesheet" href="../css/header.css">
+  <link rel="stylesheet" href="../css/payment.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <script src="../js/api.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="header">
+    <a href="index.html" class="header__title">ИДЁМ<span class="bykva">В</span>КИНО</a>
+  </header>
+
+  <main class="payment-container">
+
+    <div class="ticket-border">
+      <div class="border-pattern top"></div>
+    </div>
+
+    <h2 class="payment-title">ВЫ ВЫБРАЛИ БИЛЕТЫ:</h2>
+
+    <div class="ticket-border">
+      <div class="border-pattern bottom"></div>
+      <div class="border-pattern top"></div>
+    </div>
+
+    <div class="ticket-info">
+      <div class="info-row">
+        <span class="info-label">На фильм:</span>
+        <span class="info-value" id="paymentFilm"></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Места:</span>
+        <span class="info-value" id="paymentSeats"></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">В зале:</span>
+        <span class="info-value" id="paymentHall"></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Начало сеанса:</span>
+        <span class="info-value" id="paymentTime"></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Стоимость:</span>
+        <span class="info-value" id="paymentPrice"></span><span class="info-value"> рублей</span>
+      </div>     
+      
+      <div class="button_bron">
+        <button class="confirm-button" id="confirmButton">ПОЛУЧИТЬ КОД БРОНИРОВАНИЯ</button>
+      </div>
+
+      <div class="payment-notice">
+        <p>После оплаты билет будет доступен в этом окне, а также придёт вам на почту. Покажите QR-код нашему контроллёру у входа в зал.</p>
+        <p>Приятного просмотра!</p>
+      </div>
+    </div>
+
+    <div class="ticket-border">
+      <div class="border-pattern bottom"></div>
+    </div>
+
+  </main>
+
+  <script src="../js/payment.js" defer></script>
+</body>
+</html>

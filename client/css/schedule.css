@@ -1,0 +1,106 @@
+/* Контейнер дней недели */
+
+
+.schedule__days {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    max-width: 990px; 
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 auto 40px auto;
+    padding: 0;
+    list-style: none;
+}
+ 
+
+.schedule__day {
+    flex: 1;
+    min-width: 0;
+    margin-right: 2px;
+    height: 50px;
+    transition: all 0.3s ease;
+}
+
+.schedule__day:last-child {
+    margin-right: 0;
+}
+
+.schedule__day:first-child {
+    margin-left: 0;
+}
+
+.schedule__day__num {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    cursor: pointer;
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+    color: #000;
+    background-color: #FFFFFFE5;
+    width: 100%;
+    height: 100%;
+    padding: 0 15px;
+    border-radius: 2px;
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+
+.schedule__day.active,
+.schedule__day:hover {
+    flex: 2;
+}
+
+.schedule__day.active .schedule__day__num,
+.schedule__day:hover .schedule__day__num {
+    font-weight: bold;
+    background-color: #ffffff;
+}
+
+/* Стрелка ">" */
+.schedule__day__num_strelka {
+    font-weight: bold;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    cursor: pointer;
+    font-family: 'Arial', sans-serif;
+    color: #000;
+    background-color: #FFFFFFE5;
+    width: 100%;
+    height: 100%;
+    border-radius: 2px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.schedule__day:hover .schedule__day__num_strelka {
+    background-color: #ffffff;
+}
+
+
+.schedule__day.active {
+    flex: 2;
+}
+
+.schedule__day.active .schedule__day__num {
+    font-weight: bold;
+    background-color: #ffffff;
+}
+
+.schedule__day:not(.active):hover {
+    flex: 2;
+}
+
+.schedule__day:not(.active):hover .schedule__day__num {
+    font-weight: bold;
+    background-color: #ffffff;
+}

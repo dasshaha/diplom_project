@@ -1,0 +1,182 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  color: #333;
+  position: relative;
+  min-height: 100vh;
+}
+
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../img/fon_a.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1;
+  filter: brightness(0.7);
+}
+
+.main {
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header{
+    height: 100px;
+}
+
+.addfilm-container {
+  margin: 0 auto;
+  background-color: #EAE9EBF2;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  padding: 0;
+  width: 962px;
+  max-width: 100vw;
+  min-width: 320px;
+}
+
+.addfilm-title_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #63536C;
+    height: 57px;
+    padding: 0 40px;
+    min-width: 0;
+}
+
+.addfilm-title {
+    color: #FFFFFF;
+    font-family: Roboto;
+    font-weight: 700;
+    font-size: 22px;
+    margin: 0;
+    flex: 1;
+    min-width: 0;
+    word-wrap: break-word;
+}
+
+
+.krestic {
+    flex-shrink: 0;
+    margin-left: 15px;
+}
+
+
+
+.addfilm-info {
+  padding: 30px 110px 10px;
+  text-align: start;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.info-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.info-label {
+    margin-left: 0;
+    width: 100%;
+    text-align: left;
+}
+
+.info-value {
+    width: 100%;
+    margin: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.buttons_popap_container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  padding: 30px 20px;
+  box-sizing: border-box;
+}
+
+.button_popap_place {
+    padding: 0;
+    min-width: min-content;
+}
+
+.addfilm-button {
+  display: block;
+  min-width: 190px;
+  height: 40px;
+  background: #16A6AF;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-family: Roboto;
+  font-weight: 500;
+  font-size: 14px;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.addfilm-button.no{
+  background: #FFFFFF;
+  color: #63536C;
+}
+
+
+.addfilm-button:hover{
+  background-color: #0e7a81;
+}
+
+.addfilm-button.no:hover{
+  background-color: #c5c5c5;
+  color: #2a2a2a;
+}
+
+
+ 
+
+
+
+
+
+@media (max-width: 768px) {
+  .addfilm-container {
+    width: 100vw;
+    margin: 0;
+    max-width: none;
+  }
+  
+  .addfilm-info {
+    padding: 20px 10px 10px;
+  }
+  
+  
+  .buttons_popap_container {
+    align-items: center;
+    gap: 5px;
+    padding: 5px 15px 20px;
+  }
+}
+
+@media (max-width: 390px) {
+  
+  .addfilm-title_container {
+    padding: 0 20px;
+  }
+  
+  .addfilm-title {
+    font-size: 18px;
+  }
+}

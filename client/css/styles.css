@@ -1,0 +1,186 @@
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  color: #333;
+  position: relative;
+  min-height: 100vh;
+}
+
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../img/fon_k.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+
+ 
+.main {
+  max-width: 990px;
+  margin: 0 auto;
+  padding: 20px;
+  padding-left: 0;
+  padding-right: 0;
+
+}
+
+
+.movie {
+  position: relative;
+  background-color: #F1EBE6F2;
+  padding: 20px;
+  margin-bottom: 30px;
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  padding-bottom: 20px;
+  opacity: 0.95;
+  box-sizing: border-box;
+}
+
+.movie:last-child {
+  border-bottom: none;
+}
+
+
+.movie__poster {
+  float: left;
+  width: 125px;
+  height: 175px;
+  margin-right: 20px;
+
+  object-fit: cover;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  transition: transform 0.3s ease;
+  
+  margin-bottom: -20px;
+}
+
+
+.movie__content {
+  overflow: hidden;
+  flex: 1;
+  color: #000;
+  margin-bottom: 0;
+  margin-top: -15px;
+}
+
+
+.movie__title {
+  font-family: Roboto;
+  font-weight: 700;
+  font-style: Bold;
+  font-size: 16px;
+  line-height: 18px;
+  letter-spacing: 0%;
+  vertical-align: middle;
+
+}
+
+.movie__description {
+  font-family: Roboto;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0%;
+  vertical-align: middle;
+}
+
+.movie__info {
+  font-family: Roboto;
+  font-weight: 300;
+  font-style: Light;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0%;
+  vertical-align: middle;
+
+}
+
+
+.movie__halls {
+  flex: 0 0 100%;
+  margin-top: 20px;
+}
+
+
+.hall {
+  margin-top: 20px;
+}
+
+.hall__title {
+  font-size: 16px;
+  margin: 0 0 10px 0;
+  font-weight: bold;
+}
+
+
+.hall__times {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.hall__times li {
+  display: inline-block; /* Элементы списка в строку */
+}
+
+.hall__time {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 53px;
+  height: 33px;
+  background-color: #fff;
+  color: #000;
+  text-decoration: none;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.4);
+  font-size: 15px;
+  border-radius: 2px;
+  text-align: center;
+  margin-right: 1px;
+}
+
+.hall__time:hover {
+  background-color: #c5c5c5;
+  color: #000000;
+  border-color: #c5c5c5;
+}
+
+
+
+@media (max-width: 990px) {
+  .main {
+    width: 100%;
+    margin: 0 auto;
+    padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
+  }
+  
+  .movie {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
+  }
+  
+  .hall__time {
+    padding: 3px 6px;
+  }
+}
