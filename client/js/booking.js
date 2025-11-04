@@ -37,7 +37,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedSeats = document.querySelectorAll('.seat.selected');
         bookButton.disabled = selectedSeats.length === 0;
         
-        // Доп - показывать количество выбранных мест
         if (selectedSeats.length > 0) {
             const totalPrice = Array.from(selectedSeats).reduce((sum, seat) => 
                 sum + parseInt(seat.dataset.price), 0);

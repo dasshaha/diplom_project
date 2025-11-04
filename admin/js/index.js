@@ -43,7 +43,7 @@ function updateAdminUI() {
   // 2. ОБНОВЛЯЕМ СПИСОК ФИЛЬМОВ
   updateFilmsList();
   
-  // 3. ОБНОВЛЯЕМ СЕТКУ ЗАЛОВ (добавляем новые залы в расписание)
+  // 3. ОБНОВЛЯЕМ СЕТКУ ЗАЛОВ
   updateHallsGrid();
   
   // 4. ОБНОВЛЯЕМ СЕТКУ СЕАНСОВ
@@ -184,7 +184,7 @@ function showTimeInput(zone, filmElement) {
         film: film.film_name
     });
     
-    // Заполняем попап данными - ИСПРАВЛЕННЫЕ СЕЛЕКТОРЫ
+    // Заполняем попап данными
     const hallInput = document.getElementById('seansHallName');
     const filmInput = document.getElementById('seansFilmName');
     const timeInput = document.getElementById('seansTime');
@@ -192,6 +192,7 @@ function showTimeInput(zone, filmElement) {
     if (hallInput) hallInput.value = hall.hall_name;
     if (filmInput) filmInput.value = film.film_name;
     if (timeInput) timeInput.value = '';
+    
     
     // Сохраняем данные для использования при подтверждении
     window.currentSeansData = {
@@ -275,7 +276,7 @@ function updateFilmsList() {
         filmElement.dataset.filmId = film.id;
         filmElement.dataset.filmName = film.film_name;
         filmElement.dataset.duration = film.film_duration;
-        filmElement.setAttribute('draggable', 'true'); // ДОБАВЬТЕ ЭТУ СТРОКУ
+        filmElement.setAttribute('draggable', 'true');
         
         filmElement.innerHTML = `
             <img src="${film.film_poster}" alt="постер фильма" class="foto-film-seans">
@@ -327,7 +328,6 @@ function updateSeancesGrid() {
     dropZones.forEach(dropZone => {
         const hallId = parseInt(dropZone.dataset.hall);
         
-        // Очищаем контейнер, но оставляем time-input-container
         const timeInputContainer = dropZone.querySelector('.time-input-container');
         dropZone.innerHTML = '';
         if (timeInputContainer) {
@@ -532,7 +532,6 @@ async function deleteSeance(seanceId, sessionElement) {
 
 
 
-
 // Обработчики для залов и фильмов
 function initHallsHandlers() {
   let isProcessing = false; // Защита от множественных кликов
@@ -553,7 +552,7 @@ function initHallsHandlers() {
       const hallNameInput = document.querySelector('#addHallPopup .info-value');
       if (hallNameInput && hallNameInput.value.trim()) {
         createHall(hallNameInput.value.trim());
-        hallNameInput.value = ''; // Очищаем поле
+        hallNameInput.value = '';
       } else {
         alert('Введите название зала');
       }
@@ -629,11 +628,7 @@ function initHallsHandlers() {
     }
   };
 
-  // Обработчик событий
   document.addEventListener('click', window.globalClickHandler);
-
-
-
 
 
 
@@ -681,11 +676,10 @@ function initHallsHandlers() {
 
 
   
-  // Новая упрощенная функция для добавления фильма
+  // Функция для добавления фильма
   function initAddFilmHandler() {
       const addFilmBtn = document.getElementById('confirmAddFilm');
       if (addFilmBtn) {
-          // Удаляем старый обработчик
           addFilmBtn.replaceWith(addFilmBtn.cloneNode(true));
           const newBtn = document.getElementById('confirmAddFilm');
           
@@ -698,8 +692,8 @@ function initHallsHandlers() {
               const filmData = {
                   name: inputs[0].value.trim(),
                   duration: inputs[1].value.trim(),
-                  description: inputs[2].value.trim() || 'Описание отсутствует', // ДОБАВЬ ЗНАЧЕНИЕ ПО УМОЛЧАНИЮ
-                  origin: inputs[3].value.trim() || 'Не указана' // ДОБАВЬ ЗНАЧЕНИЕ ПО УМОЛЧАНИЮ
+                  description: inputs[2].value.trim() || 'Описание отсутствует',
+                  origin: inputs[3].value.trim() || 'Не указана'
               };
               
               // Валидация
@@ -735,10 +729,6 @@ function initHallsHandlers() {
 
 
 
-
-
-
-  
   // Обработчик отмены для формы фильма
   const cancelFilmBtn = document.getElementById('cancelAddFilm');
   if (cancelFilmBtn) {
@@ -746,7 +736,6 @@ function initHallsHandlers() {
           e.preventDefault();
           console.log('Отмена добавления фильма');
           closeAllPopups();
-          // Очищаем выбранный постер
           window.selectedPosterFile = null;
       });
   }

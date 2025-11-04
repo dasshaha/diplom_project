@@ -27,7 +27,7 @@ class ApiService {
     }
   }
 
-  // ======= ОСНОВНЫЕ МЕТОДЫ =======
+  // ОСНОВНЫЕ МЕТОДЫ 
 
   // Получить все данные (залы, фильмы, сеансы)
   async getAllData() {
@@ -65,7 +65,7 @@ class ApiService {
     });
   }
 
-  // ======= МЕТОДЫ ДЛЯ АДМИНКИ (ЗАЛЫ) =======
+  // МЕТОДЫ ДЛЯ АДМИНКИ (ЗАЛЫ) 
 
   async hallAdd(hallName) {
     const formData = new FormData();
@@ -98,7 +98,7 @@ class ApiService {
     return this._request(`/open/${hallId}`, { method: 'POST', body: formData });
   }
 
-  // ======= МЕТОДЫ ДЛЯ АДМИНКИ (ФИЛЬМЫ) =======
+  // МЕТОДЫ ДЛЯ АДМИНКИ (ФИЛЬМЫ)
 
   async filmAdd(filmData, posterFile) {
     const formData = new FormData();
@@ -114,7 +114,7 @@ class ApiService {
     return this._request(`/film/${filmId}`, { method: 'DELETE' });
   }
 
-  // ======= МЕТОДЫ ДЛЯ АДМИНКИ (СЕАНСЫ) =======
+  // МЕТОДЫ ДЛЯ АДМИНКИ (СЕАНСЫ) 
 
   async seanceAdd(seanceHallid, seanceFilmid, seanceTime) {
     const formData = new FormData();
