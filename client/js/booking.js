@@ -45,26 +45,42 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+
     bookButton.addEventListener('click', function() {
         const selectedSeats = Array.from(document.querySelectorAll('.seat.selected'));
         
-        const seatsNumbers = selectedSeats.map(seat => 
-            seat.dataset.displayNumber || seat.textContent
-        ).join(', ');
+        if (selectedSeats.length === 0) {
+            alert('Пожалуйста, выберите места');
+            return;
+        }
+        
+        const seatsNumbers = selectedSeats.map(seat => {
+            const row = seat.closest('[class^="seat-row-"]').className.match(/seat-row-(\d+)/)[1];
+            const seatNum = seat.textContent.trim();
+            return `${row}-${seatNum}`;
+        }).join(', ');
         
         const totalPrice = selectedSeats.reduce((sum, seat) => 
-            sum + parseInt(seat.dataset.price), 0);
+            sum + parseInt(seat.dataset.price || 250), 0);
 
         const ticketData = {
             film: decodeURIComponent(film),
             seats: seatsNumbers,
             hall: decodeURIComponent(hall),
             time: decodeURIComponent(time),
-            price: totalPrice
+            price: totalPrice,
+            timestamp: Date.now()
         };
         
+        console.log('Сохранение данных билета:', ticketData);
         localStorage.setItem('ticketData', JSON.stringify(ticketData));
-        window.location.href = 'payment.html';
+        
+        const savedData = localStorage.getItem('ticketData');
+        if (savedData) {
+            window.location.href = 'payment.html';
+        } else {
+            alert('Ошибка сохранения данных');
+        }
     });
 
     // Инициализация кнопки
