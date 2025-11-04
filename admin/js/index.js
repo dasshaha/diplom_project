@@ -253,7 +253,7 @@ function updateHallsList() {
         hallElement.innerHTML = `
             <p>--- ${hall.hall_name}</p>
             <div class="mysorka-box" data-hall-id="${hall.id}">
-                <img src="../img/mysorka.png" alt="мусорка" class="mysorka">
+                <img src="./img/mysorka.png" alt="мусорка" class="mysorka">
             </div>
         `;
         hallsList.appendChild(hallElement);
@@ -285,7 +285,7 @@ function updateFilmsList() {
             </div>
             <div class="mysorka-box-seans">
                 <div class="mysorka-box" data-film-id="${film.id}">
-                    <img src="../img/mysorka.png" alt="мусорка" class="mysorka">
+                    <img src="./img/mysorka.png" alt="мусорка" class="mysorka">
                 </div>
             </div>
         `;
