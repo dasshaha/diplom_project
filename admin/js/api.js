@@ -112,6 +112,45 @@ class ApiService {
   async seanceDelete(seanceId) {
     return this._request(`/seance/${seanceId}`, { method: 'DELETE' });
   }
+
+
+
+
+  // Конфигурация зала
+  async hallConfig(hallId, rowCount, placeCount, config) {
+      const formData = new FormData();
+      formData.append('rowCount', rowCount);
+      formData.append('placeCount', placeCount);
+      formData.append('config', JSON.stringify(config));
+      return this._request(`/hall/${hallId}`, { 
+          method: 'POST', 
+          body: formData 
+      });
+  }
+
+  // Настройка цен
+  async hallSetPrice(hallId, priceStandart, priceVip) {
+      const formData = new FormData();
+      formData.append('priceStandart', priceStandart);
+      formData.append('priceVip', priceVip);
+      return this._request(`/price/${hallId}`, { 
+          method: 'POST', 
+          body: formData 
+      });
+  }
+
+  // Открытие/закрытие продаж
+  async hallSetOpen(hallId, hallOpen) {
+      const formData = new FormData();
+      formData.append('hallOpen', hallOpen);
+      return this._request(`/open/${hallId}`, { 
+          method: 'POST', 
+          body: formData 
+      });
+  }
+
+
+
 }
 
 

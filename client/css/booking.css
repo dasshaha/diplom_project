@@ -307,6 +307,31 @@ body::before {
 
 
 
+.error {
+    color: #f44336;
+    text-align: center;
+    padding: 20px;
+    font-size: 16px;
+    background: rgba(244, 67, 54, 0.1);
+    border-radius: 4px;
+    margin: 10px;
+}
+
+.seat-row {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    margin-bottom: 1px;
+}
+
+.seat-row-1, .seat-row-2, .seat-row-3, .seat-row-4, 
+.seat-row-5, .seat-row-6, .seat-row-7, .seat-row-8,
+.seat-row-9, .seat-row-10 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+
 
 @media (max-width: 990px) {
   .booking-container {

@@ -217,24 +217,33 @@ body::before {
   margin: 15px 0;
   padding: 0;
   list-style: none;
+  flex-wrap: wrap;
 }
 
 .list-hall-num {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 90px;
+  min-width: 80px;
+  max-width: 150px;
   height: 46px;
   background-color: #EAE9EBF2;
   color: #000000;
   border-radius: 3px;
   font-family: Roboto;
   font-weight: 600;
-  font-size: 15px;
+  font-size: 14px;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.4);
+  padding: 5px 8px;
+  word-wrap: break-word;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .list-hall-num.active {
@@ -418,6 +427,8 @@ body::before {
   background-color: #C4C4C4;
   transition: all 0.2s ease;
   color: transparent;  
+  min-width: 15px;
+  max-width: 30px;
 }
 
 .seat.vip {
@@ -542,12 +553,12 @@ body::before {
 .hall-seans-container{
   display: block;
   max-width: 800px;
-  
+  margin-right: 5%;
 } 
 
 .hall-seans{
-  margin-top: 5px;
-  margin-bottom: 2px;
+  margin-top: 10px;
+  margin-bottom: 30px;
 }
 
 .hall-num-seans{
@@ -570,7 +581,7 @@ body::before {
   border: 1px solid #0000004D;
   height: 60px;
   box-sizing: border-box;
-  overflow-x: auto; /* Горизонтальная прокрутка */
+  overflow-x: auto;
   padding-bottom: 5px;
   scrollbar-width: thin;
   scrollbar-color: #63536C #EAE9EBF2;
@@ -684,54 +695,6 @@ footer{
     transform: translate(-50%, -50%);
 }
 
-/* Добавленные сеансы */
-.added-session {
-    background-color: #0000002c;
-    color: rgb(0, 0, 0);
-    padding: 8px 12px;
-    border-radius: 1px;
-    font-size: 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    min-width: 100px;
-    position: relative;
-    cursor: pointer;
-    flex-shrink: 0;
-    margin-right: 10px; 
-    margin-bottom: 25зpx;
-    border: 1px solid #0000004D;;
-}
-
-.added-session .film-name {
-    font-weight: bold;
-    margin-bottom: 4px;
-    text-align: center;
-}
-
-.added-session .session-time {
-    font-size: 11px;
-    opacity: 0.9;
-}
-
-.added-session .remove-session {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background: white;
-    border: none;
-    border-radius: 50%;
-    width: 16px;
-    height: 16px;
-    font-size: 10px;
-    cursor: pointer;
-    color: #ff4444;
-    display: none;
-}
-
-.added-session:hover .remove-session {
-    display: block;
-}
 
 /* Контейнер для ввода времени */
 .time-input-container {
@@ -790,81 +753,6 @@ footer{
     opacity: 0.6;
 }
 
-.drop-zone.drag-over {
-    background-color: rgba(22, 166, 175, 0.1);
-}
-
-.drop-zone.empty {
-    min-height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.drop-zone.empty::after {
-    content: " ";
-    color: #888;
-    font-style: italic;
-    font-size: 14px;
-}
-
-/* Стили для добавленных сеансов */
-.added-session {
-    background-color: #0000002c;
-    color: rgb(0, 0, 0);
-    padding: 8px 12px;
-    border-radius: 1px;
-    font-size: 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    min-width: 100px;
-    position: relative;
-    cursor: pointer;
-    flex-shrink: 0;
-    margin-right: 10px;
-    margin-bottom: 5px;
-    border: 1px solid #0000004D;
-}
-
-.added-session .film-name {
-    font-weight: bold;
-    margin-bottom: 4px;
-    text-align: center;
-}
-
-.added-session .session-time {
-    font-size: 11px;
-    opacity: 0.9;
-}
-
-.added-session .remove-session {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background: white;
-    border: none;
-    border-radius: 50%;
-    width: 16px;
-    height: 16px;
-    font-size: 10px;
-    cursor: pointer;
-    color: #ff4444;
-    display: none;
-}
-
-.added-session:hover .remove-session {
-    display: block;
-}
-
-
-
-.info-value[readonly] {
-    background-color: #f5f5f5;
-    color: #666;
-    cursor: not-allowed;
-}
-
 
 
 
@@ -878,6 +766,12 @@ footer{
     .index-title {
       width: auto;
       font-size: 20px;
+    }
+
+    .seat {
+      width: 18px !important;
+      height: 18px !important;
+      font-size: 9px !important;
     }
 
     .index-info-container {
@@ -919,7 +813,17 @@ footer{
         flex-direction: column;
     }
 
+    .list-hall-num {
+        font-size: 13px;
+        max-width: 100px;
+        min-width: 70px;
+        height: 40px;
+    }
+
 }
+
+
+
 
 @media (max-width: 390px) {
     .index-info-container {
@@ -949,8 +853,202 @@ footer{
     }
     
     .seat {
-        width: 15px;
-        height: 15px;
         font-size: 8px;
     }
+
+    .seat {
+      width: 14px !important;
+      height: 14px !important;
+      font-size: 7px !important;
+      min-width: 3% !important;
+
+    }
+
+    .list-hall-num {
+        font-size: 11px;
+        max-width: 80px;
+        min-width: 60px;
+        height: 35px;
+    }
 }
+
+
+
+
+
+
+
+
+
+.timeline-sessions {
+    min-height: 80px !important;
+    padding-top: 7px !important;
+}
+
+
+
+.timeline-sessions {
+    width: 100%;
+    border: 1px solid #0000004D;
+    border-radius: 1px;
+    position: relative;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 3px;
+    
+    display: flex;
+    align-items: flex-start;
+    gap: 2px;
+    min-height: 60px;
+    white-space: nowrap;
+}
+
+.timeline-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #0000004D;
+}
+
+
+.timeline-sessions::-webkit-scrollbar {
+    display: none;
+}
+
+.timeline-sessions {
+    scrollbar-width: none;
+}
+
+
+
+
+.added-session {
+    background-color: #0000002c;
+    border: 1px solid #0000004D;
+    border-radius: 1px;
+    padding: 3px;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 45px;
+    min-width: 65px;
+    max-width: 70px;
+    text-align: center;
+    z-index: 10;
+    margin-bottom: 25px;
+    box-sizing: border-box;
+}
+
+.added-session:last-child {
+    margin-right: 10px;
+}
+
+.added-session .film-name {
+    font-family: Roboto;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 1.1;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    text-align: center;
+    max-height: 2.2em;
+    overflow: hidden;
+    margin-bottom: 2px;
+}
+
+.added-session .session-time {
+    position: absolute;
+    bottom: -25px;
+    left: -10px;
+    font-size: 8px;
+    color: #333;
+    font-weight: 500;
+    text-align: center;
+    white-space: nowrap;
+    z-index: 100;
+}
+
+.added-session .session-time::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 8px;
+    background-color: #6b6b6b;
+    z-index: 100;
+}
+
+.added-session .remove-session {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: white;
+    border: 1px solid #ff4444;
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    font-size: 15px;
+    line-height: 12px;
+    cursor: pointer;
+    color: #ff4444;
+    display: none;
+    z-index: 10;
+    padding: 0;
+    text-align: center;
+}
+
+.added-session:hover .remove-session {
+    display: block;
+}
+
+.timeline-sessions.compact .added-session {
+    min-width: 60px;
+    font-size: 8px;
+}
+
+.timeline-sessions.compact .added-session .film-name {
+    font-size: 8px;
+}
+
+.timeline-sessions.compact .added-session .session-time {
+    font-size: 7px;
+}
+
+.timeline-sessions {
+    scrollbar-width: none;
+}
+
+
+
+.timeline-sessions::-webkit-scrollbar {
+    height: 6px;
+    display: block;
+}
+
+.timeline-sessions::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.timeline-sessions::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.timeline-sessions::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.timeline-sessions {
+    scrollbar-width: thin; /* Для Firefox */
+    scrollbar-color: #888 #f1f1f1;
+}
+

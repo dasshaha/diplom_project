@@ -90,6 +90,7 @@ function createMovieElement(movieData) {
 }
 
 
+
 function createHallElement(hallData, film) {
     const { hall, seances } = hallData;
     const now = new Date();
@@ -105,7 +106,6 @@ function createHallElement(hallData, film) {
                     const isPast = seanceTime < currentTime;
                     
                     if (isPast) {
-                        // Прошедший сеанс - неактивная кнопка
                         return `
                             <li>
                                 <span class="hall__time hall__time--past">
@@ -114,11 +114,10 @@ function createHallElement(hallData, film) {
                             </li>
                         `;
                     } else {
-                        // Будущий сеанс - активная ссылка
                         return `
                             <li>
-                                <a href="booking.html?seanceId=${seance.id}&film=${encodeURIComponent(film.film_name)}&time=${seance.seance_time}&hall=${hall.hall_name}" 
-                                   class="hall__time">
+                                <a href="booking.html?seanceId=${seance.id}&film=${encodeURIComponent(film.film_name)}&time=${encodeURIComponent(seance.seance_time)}&hall=${encodeURIComponent(hall.hall_name)}&hallId=${hall.id}" 
+                                class="hall__time">
                                     ${seanceTime}
                                 </a>
                             </li>
@@ -129,6 +128,8 @@ function createHallElement(hallData, film) {
         </div>
     `;
 }
+
+
 
 
 function formatTime(timeString) {

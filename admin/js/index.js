@@ -16,50 +16,89 @@ window.filmsClickHandler = null;
 // Глобальная защита от множественных кликов
 let globalClickLock = false;
 
-function safeConfirm(message) {
-  if (globalClickLock) return false;
-  globalClickLock = true;
+function safeConfirm(message, isDragEvent = false) {
+
+  if (!isDragEvent && globalClickLock) return false;
+  
+  if (!isDragEvent) globalClickLock = true;
   const result = confirm(message);
-  setTimeout(() => { globalClickLock = false; }, 500);
+  
+  if (!isDragEvent) {
+    setTimeout(() => { globalClickLock = false; }, 500);
+  }
   return result;
 }
 
-function safeAlert(message) {
-  if (globalClickLock) return;
-  globalClickLock = true;
+function safeAlert(message, isDragEvent = false) {
+  if (!isDragEvent && globalClickLock) return;
+  
+  if (!isDragEvent) globalClickLock = true;
   alert(message);
-  setTimeout(() => { globalClickLock = false; }, 500);
+  
+  if (!isDragEvent) {
+    setTimeout(() => { globalClickLock = false; }, 500);
+  }
+}
+
+
+
+function changeSeatType(seatElement) {
+    const types = ['free', 'vip', 'blocked'];
+    const currentType = types.find(type => seatElement.classList.contains(type)) || 'free';
+    
+    let nextType;
+    switch(currentType) {
+        case 'free': nextType = 'vip'; break;
+        case 'vip': nextType = 'blocked'; break;
+        case 'blocked': nextType = 'free'; break;
+        default: nextType = 'free';
+    }
+
+    seatElement.classList.remove('free', 'vip', 'blocked');
+    seatElement.classList.add(nextType);
+    
+    if (nextType === 'vip') {
+        seatElement.dataset.price = '350';
+    } else if (nextType === 'free') {
+        seatElement.dataset.price = '250';
+    } else {
+        delete seatElement.dataset.price;
+    }
 }
 
 
 
 // Функция обновления интерфейса админки
 function updateAdminUI() {
-  console.log('Обновляем интерфейс...');
-  
-  // 1. ОБНОВЛЯЕМ СПИСОК ЗАЛОВ
-  updateHallsList();
-  
-  // 2. ОБНОВЛЯЕМ СПИСОК ФИЛЬМОВ
-  updateFilmsList();
-  
-  // 3. ОБНОВЛЯЕМ СЕТКУ ЗАЛОВ
-  updateHallsGrid();
-  
-  // 4. ОБНОВЛЯЕМ СЕТКУ СЕАНСОВ
-  updateSeancesGrid();
+    console.log('Обновляем интерфейс...');
+    
+    // 1. ОБНОВЛЯЕМ СПИСОК ЗАЛОВ
+    updateHallsList();
+    
+    // 2. ОБНОВЛЯЕМ СПИСОК ФИЛЬМОВ
+    updateFilmsList();
+    
+    // 3. ОБНОВЛЯЕМ СЕТКУ ЗАЛОВ
+    updateHallsGrid();
+    
+    // 4. ОБНОВЛЯЕМ СЕТКУ СЕАНСОВ
+    updateSeancesGrid();
+    
+    updateHallSelectionLists();
 
-  // Инициализируем обработчики после обновления данных
-  initHallsHandlers();
-  
-  // Переинициализируем перетаскивание
-  initDragAndDropForNewElements();
+    updateConfigurationData();
+
+    initHallsHandlers();
+    
+    initDragAndDropForNewElements();
+
+    initPriceConfiguration();
 }
 
 
 
 
-// Функция для повторной инициализации перетаскивания после обновления данных
+
 function initDragAndDropForNewElements() {
     const draggableFilms = document.querySelectorAll('.draggable-film');
     const dropZones = document.querySelectorAll('.drop-zone');
@@ -74,7 +113,6 @@ function initDragAndDropForNewElements() {
         console.log('Нет зон для перетаскивания - возможно залы не созданы');
         return;
     }
-
 
     // Обработчики для перетаскиваемых фильмов
     draggableFilms.forEach(film => {
@@ -92,16 +130,19 @@ function initDragAndDropForNewElements() {
             this.classList.remove('dragging');
             draggedFilm = null;
             dropZones.forEach(zone => zone.classList.remove('drag-over'));
-            console.log('Завершено перетаскивание');
+            console.log('Завершено перетаскивание фильма');
         });
     });
 
-    // Обработчики для зон перетаскивания
+    // Обработчики для зон перетаскивания (для фильмов)
     dropZones.forEach(zone => {
         zone.addEventListener('dragover', function(e) {
-            e.preventDefault();
-            this.classList.add('drag-over');
-            e.dataTransfer.dropEffect = 'copy';
+
+            if (draggedFilm) {
+                e.preventDefault();
+                this.classList.add('drag-over');
+                e.dataTransfer.dropEffect = 'copy';
+            }
         });
 
         zone.addEventListener('dragleave', function() {
@@ -110,6 +151,7 @@ function initDragAndDropForNewElements() {
 
         zone.addEventListener('drop', function(e) {
             e.preventDefault();
+            e.stopPropagation();
             this.classList.remove('drag-over');
             
             if (draggedFilm) {
@@ -120,44 +162,131 @@ function initDragAndDropForNewElements() {
     });
 
 
-
-
-    // Обработчики для удаления сеансов перетаскиванием
+    
     const addedSessions = document.querySelectorAll('.added-session');
     addedSessions.forEach(session => {
-        session.setAttribute('draggable', 'true');
-        
-        session.addEventListener('dragstart', function(e) {
-            this.classList.add('dragging');
-            e.dataTransfer.setData('text/plain', this.dataset.seanceId);
-            e.dataTransfer.effectAllowed = 'move';
-        });
-        
-        session.addEventListener('dragend', function() {
-            this.classList.remove('dragging');
-        });
+        initDragAndDropForSession(session);
     });
 
-    // Зона удаления (вся область вне drop-zone)
+
     document.addEventListener('dragover', function(e) {
-        if (!e.target.closest('.drop-zone')) {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
-        }
-    });
 
-    document.addEventListener('drop', function(e) {
-        if (!e.target.closest('.drop-zone')) {
-            e.preventDefault();
-            const seanceId = e.dataTransfer.getData('text/plain');
-            if (seanceId) {
-                const sessionElement = document.querySelector(`[data-seance-id="${seanceId}"]`);
-                if (sessionElement && safeConfirm('Удалить этот сеанс?')) {
-                    deleteSeance(seanceId, sessionElement);
-                }
+        const draggingSession = document.querySelector('.added-session.dragging');
+        
+        if (draggingSession) {
+
+            const targetDropZone = e.target.closest('.drop-zone');
+            
+            if (!targetDropZone) {
+
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+                document.body.style.cursor = 'no-drop';
+            } else {
+
+                e.dataTransfer.dropEffect = 'copy';
+                document.body.style.cursor = 'default';
             }
         }
+        
     });
+
+
+
+
+
+
+
+    function handleDragOver(e) {
+
+        const draggingSession = document.querySelector('.added-session.dragging');
+        
+        if (draggingSession) {
+
+            
+            const targetDropZone = e.target.closest('.drop-zone');
+            
+            if (!targetDropZone) {
+
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+                document.body.style.cursor = 'no-drop';
+            } else {
+
+                e.dataTransfer.dropEffect = 'copy';
+                document.body.style.cursor = 'default';
+            }
+        }
+    }
+
+    function handleDrop(e) {
+
+        const draggingSession = document.querySelector('.added-session.dragging');
+        if (!draggingSession) return;
+        
+        e.preventDefault();
+        e.stopPropagation(); 
+        
+        // Проверяем, куда бросили элемент
+        const target = e.target;
+        const targetDropZone = target.closest('.drop-zone');
+        
+        // Если элемент брошен НЕ в drop-zone - удаляем
+        if (!targetDropZone) {
+            console.log('Сеанс брошен вне drop-zone - предлагаем удаление');
+            
+            const seanceId = draggingSession.dataset.seanceId;
+            const filmName = draggingSession.querySelector('.film-name')?.textContent || 'сеанс';
+            const time = draggingSession.querySelector('.session-time')?.textContent || '';
+            
+            if (safeConfirm(`Удалить сеанс "${filmName}" на ${time}?`, true)) {
+                // Проверяем, временный это сеанс или сохраненный
+                if (seanceId && seanceId.startsWith('temp_')) {
+                    // Удаляем временный сеанс без обращения к серверу
+                    draggingSession.remove();
+                    const originalDropZone = draggingSession.closest('.drop-zone');
+                    if (originalDropZone) {
+                        updateEmptyState(originalDropZone);
+                        checkCompactMode(originalDropZone);
+                    }
+                    console.log('Временный сеанс удален');
+                } else if (seanceId) {
+                    // Удаляем сохраненный сеанс через сервер
+                    deleteSeance(seanceId, draggingSession);
+                } else {
+                    // Если нет ID, просто удаляем из DOM
+                    draggingSession.remove();
+                    const originalDropZone = draggingSession.closest('.drop-zone');
+                    if (originalDropZone) {
+                        updateEmptyState(originalDropZone);
+                        checkCompactMode(originalDropZone);
+                    }
+                }
+            }
+        } else {
+            console.log('Сеанс брошен в drop-zone');
+        }
+        
+        // Восстанавливаем курсор и состояние
+        document.body.style.cursor = 'default';
+        draggingSession.classList.remove('dragging');
+        dropZones.forEach(zone => zone.classList.remove('drag-over'));
+    }
+
+    function handleDragEnd(e) {
+        document.body.style.cursor = 'default';
+        const draggingSession = document.querySelector('.added-session.dragging');
+        if (draggingSession) {
+            draggingSession.classList.remove('dragging');
+        }
+        dropZones.forEach(zone => zone.classList.remove('drag-over'));
+    }
+
+    // Добавляем обработчики
+    document.addEventListener('dragover', handleDragOver);
+    document.addEventListener('drop', handleDrop);
+    document.addEventListener('dragend', handleDragEnd);
+
 
 
 }
@@ -184,7 +313,6 @@ function showTimeInput(zone, filmElement) {
         film: film.film_name
     });
     
-    // Заполняем попап данными
     const hallInput = document.getElementById('seansHallName');
     const filmInput = document.getElementById('seansFilmName');
     const timeInput = document.getElementById('seansTime');
@@ -202,10 +330,8 @@ function showTimeInput(zone, filmElement) {
         filmName: film.film_name
     };
     
-    // Показываем попап
     openPopup('addSeansPopup');
     
-    // Фокус на поле времени
     if (timeInput) {
         setTimeout(() => {
             timeInput.focus();
@@ -309,8 +435,10 @@ function updateHallsGrid() {
         hallSeansElement.className = 'hall-seans';
         hallSeansElement.innerHTML = `
             <p class="hall-num-seans">${hall.hall_name}</p>
-            <div class="num-hall-container drop-zone" data-hall="${hall.id}">
-                
+            <div class="simple-timeline">
+                <div class="timeline-sessions drop-zone" data-hall="${hall.id}">
+                    <!-- Сеансы будут добавляться сюда -->
+                </div>
             </div>
         `;
         hallSeansContainer.appendChild(hallSeansElement);
@@ -320,7 +448,6 @@ function updateHallsGrid() {
 }
 
 
-
 // 3. Функция обновления сетки сеансов
 function updateSeancesGrid() {
     const dropZones = document.querySelectorAll('.drop-zone');
@@ -328,21 +455,20 @@ function updateSeancesGrid() {
     dropZones.forEach(dropZone => {
         const hallId = parseInt(dropZone.dataset.hall);
         
-        const timeInputContainer = dropZone.querySelector('.time-input-container');
+
+        const existingLine = dropZone.querySelector('.timeline-line');
         dropZone.innerHTML = '';
-        if (timeInputContainer) {
-            dropZone.appendChild(timeInputContainer);
-        }
         
-        // Находим сеансы для этого зала и сортируем по времени
+        const line = document.createElement('div');
+        line.className = 'timeline-line';
+        dropZone.appendChild(line);
+        
         const hallSeances = appData.seances.filter(seance => 
             seance.seance_hallid === hallId
         ).sort((a, b) => {
-            // Сортируем по времени (формат "HH:MM")
             return a.seance_time.localeCompare(b.seance_time);
         });
         
-        // Добавляем отсортированные сеансы в зал
         hallSeances.forEach(seance => {
             const film = appData.films.find(f => f.id === seance.seance_filmid);
             if (film) {
@@ -352,6 +478,13 @@ function updateSeancesGrid() {
         
         updateEmptyState(dropZone);
     });
+    
+    const allSessions = document.querySelectorAll('.added-session');
+    allSessions.forEach(session => {
+        initDragAndDropForSession(session);
+    });
+    
+    setTimeout(recalculateAllSessionPositions, 100);
 }
 
 
@@ -368,40 +501,143 @@ function updateEmptyState(dropZone) {
 
 
 
-// Вспомогательная функция для добавления сеанса в таймлайн
+
 function addSessionToTimeline(dropZone, film, time, seanceId = null) {
+    const hallId = dropZone.dataset.hall;
+    
+    // 1. Форматируем время (12:00)
+    const formattedTime = time.substring(0, 5);
+    
+    // 2. Берем ПОЛНОЕ название фильма
+    const fullFilmName = film.film_name;
+    
+    // 3. Создаем элемент сеанса
     const sessionElement = document.createElement('div');
     sessionElement.className = 'added-session';
     sessionElement.dataset.filmId = film.id;
-    sessionElement.dataset.hallId = dropZone.dataset.hall;
-    sessionElement.dataset.time = time;
+    sessionElement.dataset.hallId = hallId;
+    sessionElement.dataset.time = formattedTime;
+    
     if (seanceId) {
         sessionElement.dataset.seanceId = seanceId;
-    }
+    } else {
 
-    const shortFilmName = film.film_name.length > 20 ? 
-        film.film_name.substring(0, 20) + '...' : film.film_name;
+        sessionElement.dataset.seanceId = 'temp_' + Date.now();
+    }
     
+    // 4. Внутри 2 блока: название фильма и время
     sessionElement.innerHTML = `
-        <div class="film-name">${shortFilmName}</div>
-        <div class="session-time">${time}</div>
+        <div class="session-time">${formattedTime}</div>
+        <div class="film-name">${fullFilmName}</div>
         <button class="remove-session" title="Удалить сеанс">×</button>
     `;
+    
 
+    const nameLength = fullFilmName.length;
+    let width = 60; 
+    
+    if (nameLength > 25) width = 90;
+    else if (nameLength > 20) width = 85;
+    else if (nameLength > 15) width = 75;
+    else if (nameLength > 10) width = 70;
+    
+    sessionElement.style.minWidth = width + 'px';
+    sessionElement.style.maxWidth = width + 'px';
+    
+    const allSessions = dropZone.querySelectorAll('.added-session');
+    const containerWidth = dropZone.clientWidth;
+    let totalWidth = 0;
+    
+    allSessions.forEach(s => {
+        totalWidth += s.offsetWidth + 3;
+    });
+    totalWidth += width + 3;
+    
+    if (totalWidth > containerWidth * 0.95) {
+        dropZone.classList.add('compact');
+    } else {
+        dropZone.classList.remove('compact');
+    }
+    
+
+    // 7. Добавляем обработчик удаления
     const removeBtn = sessionElement.querySelector('.remove-session');
     removeBtn.addEventListener('click', function(e) {
         e.stopPropagation();
+        const seanceId = sessionElement.dataset.seanceId;
+        
         if (seanceId) {
-            deleteSeance(seanceId, sessionElement);
-        } else {
-            sessionElement.remove();
-            updateEmptyState(dropZone);
+            if (seanceId.startsWith('temp_')) {
+                if (safeConfirm('Удалить этот сеанс?')) {
+                    sessionElement.remove();
+                    updateEmptyState(dropZone);
+                    checkCompactMode(dropZone);
+                }
+            } else {
+
+                deleteSeance(seanceId, sessionElement);
+            }
         }
     });
+    
 
+    initDragAndDropForSession(sessionElement);
+    
+    // 9. Добавляем в контейнер
     dropZone.appendChild(sessionElement);
     updateEmptyState(dropZone);
 }
+
+
+
+
+
+function checkCompactMode(dropZone) {
+    const allSessions = dropZone.querySelectorAll('.added-session');
+    const containerWidth = dropZone.clientWidth;
+    let totalWidth = 0;
+    
+    allSessions.forEach(s => {
+        totalWidth += s.offsetWidth + 5;
+    });
+    
+    if (totalWidth > containerWidth * 0.95) {
+        dropZone.classList.add('compact');
+    } else {
+        dropZone.classList.remove('compact');
+    }
+}
+
+
+
+function initDragAndDropForSession(sessionElement) {
+    sessionElement.setAttribute('draggable', 'true');
+    
+    sessionElement.addEventListener('dragstart', function(e) {
+        this.classList.add('dragging');
+        e.dataTransfer.setData('text/plain', this.dataset.seanceId);
+        e.dataTransfer.effectAllowed = 'move';
+        console.log('Начато перетаскивание сеанса:', this.dataset.seanceId);
+        e.stopPropagation(); 
+    });
+    
+    sessionElement.addEventListener('dragend', function() {
+        this.classList.remove('dragging');
+        console.log('Завершено перетаскивание сеанса');
+    });
+    
+    sessionElement.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    });
+    
+    sessionElement.addEventListener('drop', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    });
+}
+
+
 
 
 
@@ -448,7 +684,6 @@ async function createHall(hallName) {
 async function deleteHall(hallId, hallName) {
   if (isProcessingClick) return;
   
-  // ОДНО подтверждение вместо нескольких
   if (!safeConfirm(`Удалить зал "${hallName}"?`)) return;
   
   isProcessingClick = true;
@@ -517,26 +752,45 @@ function handlePosterUpload(callback) {
 
 // Функция удаления сеанса
 async function deleteSeance(seanceId, sessionElement) {
-    if (safeConfirm('Удалить этот сеанс?')) {
-        try {
-            await api.seanceDelete(seanceId);
+    if (!safeConfirm('Удалить этот сеанс?')) return;
+    
+    try {
+        await api.seanceDelete(seanceId);
+        
+        // Удаляем элемент из DOM
+        if (sessionElement && sessionElement.parentNode) {
             sessionElement.remove();
-            await loadAllData(); // Перезагружаем данные
-        } catch (error) {
-            alert('Ошибка удаления сеанса: ' + error.message);
         }
+        
+        // Обновляем состояние зоны
+        const dropZone = document.querySelector(`.drop-zone[data-hall]`);
+        if (dropZone) {
+            updateEmptyState(dropZone);
+            checkCompactMode(dropZone);
+        }
+        
+        // Перезагружаем данные с сервера для синхронизации
+        setTimeout(async () => {
+            try {
+                await loadAllData();
+            } catch (error) {
+                console.error('Ошибка при обновлении данных:', error);
+            }
+        }, 100);
+        
+    } catch (error) {
+        console.error('Ошибка удаления сеанса:', error);
+        safeAlert('Ошибка удаления сеанса: ' + error.message);
     }
 }
 
 
 
 
-
 // Обработчики для залов и фильмов
 function initHallsHandlers() {
-  let isProcessing = false; // Защита от множественных кликов
-  
-  // Обработчик для кнопки "СОЗДАТЬ ЗАЛ"
+  let isProcessing = false;
+
   const createHallBtn = document.querySelector('[data-popup="addHallPopup"]');
   if (createHallBtn) {
     createHallBtn.addEventListener('click', function() {
@@ -544,7 +798,6 @@ function initHallsHandlers() {
     });
   }
 
-  // Обработчик для кнопки "ДОБАВИТЬ ЗАЛ" в попапе
   const addHallBtn = document.querySelector('#addhallButton');
   if (addHallBtn) {
     addHallBtn.addEventListener('click', function(e) {
@@ -566,9 +819,9 @@ function initHallsHandlers() {
     document.removeEventListener('click', window.globalClickHandler);
   }
 
-  // ОБЩИЙ обработчик для удаления залов и фильмов (делегирование событий)
+  // ОБЩИЙ обработчик для удаления залов и фильмов
   window.globalClickHandler = function(e) {
-    // Защита от множественных кликов
+
     if (isProcessing) {
       console.log('Запрос уже обрабатывается, пропускаем клик');
       return;
@@ -821,94 +1074,118 @@ function initHallsHandlers() {
 
 
 document.addEventListener('DOMContentLoaded', function() {
-  loadAllData();
-  initHallsHandlers();
-  
-
-  updateHallLayoutFromInputs();
-  initPriceConfiguration();
-  initSalesManagement(); 
+    loadAllData();
+    initHallsHandlers();
 
 
-  // Конфигурация залов
-  const hallNumbers = document.querySelectorAll('.list-hall-num');
-  const seats = document.querySelectorAll('.seat');
-  
-  // Управление сеансами
-  const trashIcons = document.querySelectorAll('.mysorka-box');
-
-  // Popup элементы
-  const popupOverlays = document.querySelectorAll('.popup-overlay');
-  const closeButtons = document.querySelectorAll('.krestic');
+    updateHallLayoutFromInputs();
+    initPriceConfiguration();
 
 
-  // Обработчики для кнопок сохранения сеансов
-  const saveSessionsBtn = document.getElementById('saveSessions');
-  const cancelSessionsBtn = document.getElementById('cancelSessions');
+    // Конфигурация залов
+    const hallNumbers = document.querySelectorAll('.list-hall-num');
+    const seats = document.querySelectorAll('.seat');
 
-  if (saveSessionsBtn) {
-      saveSessionsBtn.addEventListener('click', function() {
-          alert('Все сеансы автоматически сохраняются при создании');
-      });
-  }
+    // Управление сеансами
+    const trashIcons = document.querySelectorAll('.mysorka-box');
 
-  if (cancelSessionsBtn) {
-      cancelSessionsBtn.addEventListener('click', function() {
-          if (confirm('Отменить все несохраненные изменения?')) {
-              loadAllData(); // Перезагружаем исходные данные
-          }
-      });
-  }
+    // Popup элементы
+    const popupOverlays = document.querySelectorAll('.popup-overlay');
+    const closeButtons = document.querySelectorAll('.krestic');
 
 
-  // Инициализация конфигурации залов
-  initHallConfiguration();
+    // Инициализация обработчиков полей конфигурации залов
+    const rowInput = document.getElementById('row-count');
+    const seatInput = document.getElementById('seat-count');
+    
+    if (rowInput && seatInput) {
+        rowInput.addEventListener('change', updateHallLayoutFromInputs);
+        seatInput.addEventListener('change', updateHallLayoutFromInputs);
+    }
+    
+    initSalesManagement();
 
-  // Инициализация управления сеансами
-  initSessionManagement();
 
-  // Инициализация popup окон
-  initPopupWindows();
+    const saveSessionsBtn = document.getElementById('saveSessions');
+    const cancelSessionsBtn = document.getElementById('cancelSessions');
 
-
-  function initHallConfiguration() {
-    // Обработчики для выбора зала
-    hallNumbers.forEach(hall => {
-      hall.addEventListener('click', function() {
-        selectHall(this);
-      });
-    });
-
-    // Обработчики для мест
-    seats.forEach(seat => {
-      seat.addEventListener('click', function() {
-        changeSeatType(this);
-      });
-    });
-
-    // Обработчики для кнопок в каждой секции
-    document.querySelectorAll('.index-container').forEach(container => {
-      const saveBtn = container.querySelector('.index-button:not([data-popup])');
-      const cancelBtn = container.querySelector('.index-button-no');
-      
-      if (saveBtn) {
-        saveBtn.addEventListener('click', function() {
-          const hallContainer = this.closest('.index-container');
-          saveConfiguration(hallContainer);
+    if (saveSessionsBtn) {
+        saveSessionsBtn.addEventListener('click', function() {
+            alert('Все сеансы автоматически сохраняются при создании');
         });
-      }
-      
-      if (cancelBtn) {
-        cancelBtn.addEventListener('click', cancelChanges);
-      }
-    });
-  }
+    }
 
-  function initSessionManagement() {
-  console.log('Инициализация управления сеансами...');
-}
+    if (cancelSessionsBtn) {
+        cancelSessionsBtn.addEventListener('click', function() {
+            if (confirm('Отменить все несохраненные изменения?')) {
+                loadAllData();
+            }
+        });
+    }
 
-  function initPopupWindows() {
+
+    initHallConfiguration();
+
+    initSessionManagement();
+
+    initPopupWindows();
+
+
+    function initHallConfiguration() {
+
+        hallNumbers.forEach(hall => {
+            hall.addEventListener('click', function() {
+                selectHall(this);
+            });
+        });
+
+
+        seats.forEach(seat => {
+            seat.addEventListener('click', function() {
+                changeSeatType(this);
+            });
+        });
+
+
+        const saveHallConfigBtn = document.querySelector('.index-container:nth-child(2) .index-button:not(.index-button-no)');
+        if (saveHallConfigBtn) {
+            saveHallConfigBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Сохранение конфигурации зала');
+                saveHallConfiguration();
+            });
+        }
+
+
+        const savePriceBtn = document.querySelector('.index-container:nth-child(3) .index-button:not(.index-button-no)');
+        if (savePriceBtn) {
+            savePriceBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Сохранение цен');
+            });
+        }
+
+        
+        const cancelBtns = document.querySelectorAll('.index-button-no');
+        cancelBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Отмена изменений');
+                cancelChanges();
+            });
+        });
+    }
+
+    
+
+    function initSessionManagement() {
+        console.log('Инициализация управления сеансами...');
+    }
+
+    function initPopupWindows() {
     // Обработчики для открытия popup окон
     document.querySelectorAll('[data-popup]').forEach(button => {
       button.addEventListener('click', function() {
@@ -924,7 +1201,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
 
-    // Закрытие popup при клике на overlay
+
     popupOverlays.forEach(overlay => {
       overlay.addEventListener('click', function(e) {
         if (e.target === this) {
@@ -933,7 +1210,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
 
-    // Закрытие popup при нажатии Escape
+
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape') {
         closeAllPopups();
@@ -943,17 +1220,26 @@ document.addEventListener('DOMContentLoaded', function() {
     // Обработчики для кнопок "Отмена" внутри popup
     document.querySelectorAll('.addhall-button.no, .addfilm-button.no, .addseans-button.no').forEach(button => {
       button.addEventListener('click', function(e) {
+
+        if (document.querySelector('.added-session.dragging')) {
+          return; 
+        }
+        
         e.preventDefault();
         closeAllPopups();
       });
     });
 
-
     // Обработчики для кнопок сохранения внутри popup
     document.querySelectorAll('.addhall-button:not(.no), .addfilm-button:not(.no), .addseans-button:not(.no)').forEach(button => {
       button.addEventListener('click', function(e) {
+
+        if (document.querySelector('.added-session.dragging')) {
+          return;
+        }
+        
         e.preventDefault();
-        // Логика сохранения данных из формы
+
         console.log('Сохранение данных из popup:', this.textContent);
         closeAllPopups();
       });
@@ -961,42 +1247,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
 
-
-  function saveAllSessions() {
-    const sessions = [];
-    const dropZones = document.querySelectorAll('.drop-zone');
-
-    dropZones.forEach(zone => {
-      const hallId = zone.dataset.hall;
-      const sessionElements = zone.querySelectorAll('.added-session');
-
-      sessionElements.forEach(session => {
-        sessions.push({
-          hallId: hallId,
-          filmId: session.dataset.filmId,
-          filmName: session.querySelector('.film-name').textContent,
-          time: session.dataset.time
-        });
-      });
-    });
-
-    console.log('Сохраненные сеансы:', sessions);
-    alert('Сетка сеансов успешно сохранена!');
-  }
-
-  function cancelAllSessions() {
-    if (confirm('Отменить все изменения в сетке сеансов?')) {
-      const sessions = document.querySelectorAll('.added-session');
-      sessions.forEach(session => session.remove());
-      
-      const dropZones = document.querySelectorAll('.drop-zone');
-      dropZones.forEach(zone => {
-        zone.classList.add('empty');
-      });
-      
-      console.log('Все сеансы удалены');
-    }
-  }
 
 
   function selectHall(hallElement) {
@@ -1039,49 +1289,52 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-  function saveConfiguration(hallContainer) {
-    const selectedHall = hallContainer.querySelector('.list-hall-num.active');
-    if (!selectedHall) {
-      alert('Пожалуйста, выберите зал для конфигурации');
-      return;
+
+    function cancelChanges() {
+        if (safeConfirm('Отменить все изменения в этом разделе?')) {
+            // Перезагружаем данные с сервера
+            loadAllData();
+            alert('Изменения отменены. Данные восстановлены.');
+        }
     }
-
-    const configuration = {
-      hall: selectedHall.textContent,
-      seats: []
-    };
-
-    const hallSeats = hallContainer.querySelectorAll('.seat');
-    hallSeats.forEach(seat => {
-      configuration.seats.push({
-        type: getCurrentSeatType(seat),
-        price: seat.dataset.price || '0',
-        number: seat.textContent,
-        row: seat.parentElement.className.replace('seat-row-', '')
-      });
-    });
-
-    console.log('Конфигурация сохранена:', configuration);
-    alert('Конфигурация успешно сохранена!');
-  }
-
-  function cancelChanges() {
-    if (confirm('Отменить все изменения?')) {
-      seats.forEach(seat => {
-        seat.classList.remove('vip', 'blocked');
-        seat.classList.add('free');
-        seat.dataset.price = '250';
-      });
-      console.log('Изменения отменены');
-    }
-  }
   
 });  
 
 
 
+function collectHallConfiguration() {
+    const config = [];
+    const seatsGrid = document.querySelector('.seats-grid');
+    
+    if (!seatsGrid) {
+        console.error('Сетка мест не найдена');
+        return config;
+    }
+    
+    const rows = seatsGrid.querySelectorAll('[class*="seat-row"]');
+    
+    rows.forEach(row => {
+        const rowConfig = [];
+        const seats = row.querySelectorAll('.seat');
+        
+        seats.forEach(seat => {
+            if (seat.classList.contains('vip')) {
+                rowConfig.push('vip');
+            } else if (seat.classList.contains('blocked')) {
+                rowConfig.push('disabled');
+            } else {
+                rowConfig.push('standart');
+            }
+        });
+        
+        config.push(rowConfig);
+    });
+    
+    console.log('Собрана конфигурация:', config);
+    return config;
+}
 
-// Функция для обновления схемы зала
+
 function updateHallLayout(rows, seatsPerRow) {
     const seatsGrid = document.querySelector('.seats-grid');
     if (!seatsGrid) return;
@@ -1090,7 +1343,7 @@ function updateHallLayout(rows, seatsPerRow) {
     
     for (let row = 1; row <= rows; row++) {
         const rowElement = document.createElement('div');
-        rowElement.className = `seat-row-${row}`;
+        rowElement.className = `seat-row seat-row-${row}`;
         
         for (let seatNum = 1; seatNum <= seatsPerRow; seatNum++) {
             const seat = document.createElement('div');
@@ -1105,18 +1358,145 @@ function updateHallLayout(rows, seatsPerRow) {
         
         seatsGrid.appendChild(rowElement);
     }
+    
+    console.log(`Схема зала обновлена: ${rows} рядов × ${seatsPerRow} мест`);
 }
 
-// Обработчики для ввода рядов и мест
-document.addEventListener('DOMContentLoaded', function() {
-    const rowInput = document.getElementById('row-count');
-    const seatInput = document.getElementById('seat-count');
+
+function updateHallSelectionLists() {
+    console.log('Обновляем списки выбора залов...');
     
-    if (rowInput && seatInput) {
-        rowInput.addEventListener('change', updateHallLayoutFromInputs);
-        seatInput.addEventListener('change', updateHallLayoutFromInputs);
+    const hallLists = document.querySelectorAll('.list-hall');
+    
+    hallLists.forEach(list => {
+        list.innerHTML = '';
+        
+        appData.halls.forEach(hall => {
+            const hallItem = document.createElement('li');
+            hallItem.className = 'list-hall-num';
+            
+            const displayName = hall.hall_name.length > 20 
+                ? hall.hall_name.substring(0, 17) + '...' 
+                : hall.hall_name;
+                
+            hallItem.textContent = displayName.toUpperCase();
+            hallItem.title = hall.hall_name;
+            hallItem.dataset.hallId = hall.id; // сохраняем ID зала
+            hallItem.dataset.fullName = hall.hall_name;
+            
+            hallItem.addEventListener('click', function() {
+                list.querySelectorAll('.list-hall-num').forEach(item => {
+                    item.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                console.log('Выбран зал:', this.dataset.fullName, 'ID:', this.dataset.hallId);
+                
+                // АВТОМАТИЧЕСКОЕ ОБНОВЛЕНИЕ СХЕМЫ ПРИ ВЫБОРЕ ЗАЛА
+                const rowCount = parseInt(document.getElementById('row-count').value) || 10;
+                const seatCount = parseInt(document.getElementById('seat-count').value) || 8;
+                updateHallLayout(rowCount, seatCount);
+            });
+            
+            list.appendChild(hallItem);
+        });
+        
+        const firstHall = list.querySelector('.list-hall-num');
+        if (firstHall) {
+            firstHall.classList.add('active');
+        }
+    });
+    
+    console.log('Списки выбора залов обновлены');
+}
+
+
+
+// Функция для заполнения полей данными из БД
+function updateConfigurationData() {
+    console.log('Заполняем поля данными из БД...');
+    
+    // Заполняем поля "Конфигурация залов"
+    if (appData.halls.length > 0) {
+        const firstHall = appData.halls[0];
+        
+        // Заполняем поля рядов и мест
+        if (firstHall.hall_config) {
+            const config = firstHall.hall_config;
+            const rowCount = config.length;
+            const seatCount = config[0] ? config[0].length : 0;
+            
+            const rowInput = document.getElementById('row-count');
+            const seatInput = document.getElementById('seat-count');
+            
+            if (rowInput) rowInput.value = rowCount;
+            if (seatInput) seatInput.value = seatCount;
+            
+            // Обновляем схему зала
+            updateHallLayout(rowCount, seatCount);
+            
+            // Восстанавливаем типы мест из конфигурации
+            restoreSeatTypes(config);
+        }
     }
-});
+    
+
+    const basicPriceInput = document.getElementById('basic-price-input');
+    const vipPriceInput = document.getElementById('vip-price-input');
+    
+    if (basicPriceInput && vipPriceInput && appData.halls.length > 0) {
+
+        const hall = appData.halls[0];
+        
+        // Заполняем цены
+        basicPriceInput.value = hall.price_standart || 250;
+        vipPriceInput.value = hall.price_vip || 350;
+    }
+    
+    console.log('Поля заполнены данными из БД');
+}
+
+
+
+// Функция для восстановления типов мест из конфигурации
+function restoreSeatTypes(config) {
+    const seatsGrid = document.querySelector('.seats-grid');
+    if (!seatsGrid) return;
+    
+    const rows = seatsGrid.querySelectorAll('[class*="seat-row"]');
+    
+    rows.forEach((row, rowIndex) => {
+        const seats = row.querySelectorAll('.seat');
+        
+        seats.forEach((seat, seatIndex) => {
+            if (config[rowIndex] && config[rowIndex][seatIndex]) {
+                const seatType = config[rowIndex][seatIndex];
+                
+                // Очищаем классы
+                seat.classList.remove('free', 'vip', 'blocked');
+                
+                // Устанавливаем правильный тип
+                if (seatType === 'vip') {
+                    seat.classList.add('vip');
+                    seat.dataset.price = '350';
+                } else if (seatType === 'disabled') {
+                    seat.classList.add('blocked');
+                    delete seat.dataset.price;
+                } else {
+                    seat.classList.add('free');
+                    seat.dataset.price = '250';
+                }
+            }
+        });
+    });
+}
+
+
+
+
+
+
+
 
 function updateHallLayoutFromInputs() {
     const rows = parseInt(document.getElementById('row-count').value) || 10;
@@ -1127,58 +1507,306 @@ function updateHallLayoutFromInputs() {
 
 
 
-// Функция для настройки цен
-function initPriceConfiguration() {
-    const priceInputs = document.querySelectorAll('.make-price .info-value');
-    const savePriceBtn = document.querySelector('.index-button'); // Первая кнопка сохранения в разделе цен
-    
-    if (savePriceBtn) {
-        savePriceBtn.addEventListener('click', function() {
-            const basicPrice = priceInputs[0]?.value || '250';
-            const vipPrice = priceInputs[1]?.value || '350';
-            
-            // Обновляем цены на всех местах
-            document.querySelectorAll('.seat').forEach(seat => {
-                if (seat.classList.contains('vip')) {
-                    seat.dataset.price = vipPrice;
-                } else if (seat.classList.contains('free')) {
-                    seat.dataset.price = basicPrice;
-                }
-            });
-            
-            alert(`Цены обновлены: обычные - ${basicPrice}р, VIP - ${vipPrice}р`);
-        });
+
+function validateNumberInput(value, fieldName, min = 1, max = 20) {
+    const num = parseInt(value);
+    if (isNaN(num)) {
+        alert(`${fieldName} должно быть числом`);
+        return false;
     }
+    if (num < min) {
+        alert(`${fieldName} должно быть больше ${min}`);
+        return false;
+    }
+    if (num > max) {
+        alert(`${fieldName} не может быть больше ${max}`);
+        return false;
+    }
+    return true;
 }
 
 
 
-// Функция для управления продажами
+// Функция для инициализации конфигурации цен
+function initPriceConfiguration() {
+    console.log('Инициализация конфигурации цен...');
+    
+
+    const priceContainers = document.querySelectorAll('.index-container');
+    let priceContainer = null;
+    
+
+    for (let container of priceContainers) {
+        const title = container.querySelector('.index-title');
+        if (title && title.textContent.includes('КОНФИГУРАЦИЯ ЦЕН')) {
+            priceContainer = container;
+            break;
+        }
+    }
+    
+    if (!priceContainer) {
+        console.error('Контейнер с ценами не найден');
+        return;
+    }
+    
+
+    const basicPriceInput = priceContainer.querySelector('#basic-price-input');
+    const vipPriceInput = priceContainer.querySelector('#vip-price-input');
+    const savePriceBtn = priceContainer.querySelector('.index-button:not(.index-button-no)');
+    
+    if (!basicPriceInput || !vipPriceInput || !savePriceBtn) {
+        console.error('Не все элементы конфигурации цен найдены');
+        return;
+    }
+    
+    console.log('Элементы конфигурации цен найдены');
+    
+
+    const newSaveBtn = savePriceBtn.cloneNode(true);
+    savePriceBtn.parentNode.replaceChild(newSaveBtn, savePriceBtn);
+    
+    // Добавляем новый обработчик
+    newSaveBtn.addEventListener('click', async function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Находим выбранный зал в ЭТОМ контейнере
+        const selectedHall = priceContainer.querySelector('.list-hall-num.active');
+        if (!selectedHall) {
+            alert('Пожалуйста, выберите зал для настройки цен');
+            return;
+        }
+
+        const hallId = selectedHall.dataset.hallId;
+        const hallName = selectedHall.dataset.fullName || selectedHall.textContent;
+        
+        // Получаем значения
+        const basicPrice = parseInt(basicPriceInput.value.trim());
+        const vipPrice = parseInt(vipPriceInput.value.trim());
+
+        // Валидация
+        if (isNaN(basicPrice) || basicPrice <= 0) {
+            alert('Введите корректную цену для обычных мест (больше 0)');
+            basicPriceInput.focus();
+            return;
+        }
+        if (isNaN(vipPrice) || vipPrice <= 0) {
+            alert('Введите корректную цену для VIP мест (больше 0)');
+            vipPriceInput.focus();
+            return;
+        }
+
+        try {
+            console.log('Сохранение цен:', { 
+                hallId, 
+                hallName, 
+                basicPrice, 
+                vipPrice 
+            });
+
+            await api.hallSetPrice(hallId, basicPrice, vipPrice);
+            alert(`Цены для зала "${hallName}" успешно сохранены!`);
+            
+            // Обновляем данные
+            await loadAllData();
+            
+        } catch (error) {
+            console.error('Ошибка сохранения цен:', error);
+            alert('Ошибка сохранения цен: ' + error.message);
+        }
+    });
+    
+    console.log('Обработчик цен успешно инициализирован!');
+}
+
+
+
 function initSalesManagement() {
     const openSalesBtn = document.querySelector('[data-popup="addSeansPopup"]');
     
     if (openSalesBtn) {
-        openSalesBtn.addEventListener('click', function() {
-            const selectedHall = document.querySelector('.list-hall-num.active');
+        openSalesBtn.addEventListener('click', async function() {
+            const selectedHall = document.querySelector('.index-container:last-child .list-hall-num.active');
             if (!selectedHall) {
                 alert('Выберите зал для открытия продаж');
                 return;
             }
             
-            const hallName = selectedHall.textContent;
-            if (confirm(`Открыть продажи билетов для ${hallName}?`)) {
-                alert(`Продажи билетов для ${hallName} открыты!`);
-                this.textContent = 'ПРИОСТАНОВИТЬ ПРОДАЖУ БИЛЕТОВ';
-
-                this.removeEventListener('click', arguments.callee);
-                this.addEventListener('click', function() {
-                    if (confirm(`Приостановить продажи билетов для ${hallName}?`)) {
-                        alert(`Продажи билетов для ${hallName} приостановлены!`);
-                        this.textContent = 'ОТКРЫТЬ ПРОДАЖУ БИЛЕТОВ';
-                    }
-                });
+            const hallId = selectedHall.dataset.hallId;
+            const hallName = selectedHall.dataset.fullName || selectedHall.textContent;
+            
+            if (confirm(`Открыть продажи билетов для "${hallName}"?`)) {
+                try {
+                    await api.hallSetOpen(hallId, 1);
+                    alert(`Продажи билетов для "${hallName}" открыты!`);
+                    this.textContent = 'ПРИОСТАНОВИТЬ ПРОДАЖУ БИЛЕТОВ';
+                    
+                } catch (error) {
+                    console.error('Ошибка открытия продаж:', error);
+                    alert('Ошибка открытия продаж: ' + error.message);
+                }
             }
         });
     }
 }
 
+
+
+// Функция для пересчета позиций всех сеансов при изменении размера
+function recalculateAllSessionPositions() {
+    const dropZones = document.querySelectorAll('.drop-zone');
+    
+    dropZones.forEach(dropZone => {
+        const sessions = dropZone.querySelectorAll('.added-session');
+        const containerWidth = dropZone.offsetWidth;
+        
+        if (sessions.length > 0 && containerWidth > 0) {
+            // Сначала получаем все позиции
+            const positions = [];
+            sessions.forEach(session => {
+                const time = session.dataset.time;
+                const [hours, minutes] = time.split(':').map(Number);
+                const totalMinutes = hours * 60 + minutes;
+                const positionPercentage = (totalMinutes / 1439) * 100;
+                positions.push({
+                    session: session,
+                    originalPosition: positionPercentage
+                });
+            });
+            
+            // Сортируем по времени
+            positions.sort((a, b) => a.originalPosition - b.originalPosition);
+            
+            // Пересчитываем позиции с учетом ширины
+            positions.forEach((item, index) => {
+                const session = item.session;
+                const minDistance = 60;
+                
+                // Рассчитываем новую позицию с учетом соседей
+                let newPosition = item.originalPosition;
+                
+                if (index > 0) {
+                    const prevSession = positions[index - 1];
+                    const prevPosition = parseFloat(prevSession.session.style.left) || prevSession.originalPosition;
+                    const distance = (newPosition - prevPosition) / 100 * containerWidth;
+                    
+                    if (distance < minDistance) {
+                        newPosition = prevPosition + (minDistance / containerWidth * 100);
+                    }
+                }
+                
+                // Проверяем границы
+                if (newPosition > 98) newPosition = 98;
+                if (newPosition < 2) newPosition = 2;
+                
+                session.style.left = `${newPosition}%`;
+            });
+        }
+    });
+}
+
+
+
+// Функция для сохранения конфигурации залов
+async function saveHallConfiguration() {
+    const selectedHall = document.querySelector('.index-container:nth-child(2) .list-hall-num.active');
+    if (!selectedHall) {
+        alert('Пожалуйста, выберите зал для сохранения конфигурации');
+        return;
+    }
+
+    const hallId = selectedHall.dataset.hallId;
+    const hallName = selectedHall.dataset.fullName || selectedHall.textContent;
+    
+    // Получаем количество рядов и мест из полей ввода
+    const rowCount = parseInt(document.getElementById('row-count').value) || 10;
+    const seatCount = parseInt(document.getElementById('seat-count').value) || 8;
+    
+    // Валидация
+    if (!validateNumberInput(rowCount, 'Количество рядов', 1, 20) || 
+        !validateNumberInput(seatCount, 'Количество мест в ряду', 1, 20)) {
+        return;
+    }
+    
+    // Собираем конфигурацию
+    const config = collectHallConfiguration();
+    
+    try {
+        console.log('Сохраняем конфигурацию зала:', { 
+            hallId, 
+            hallName, 
+            rowCount, 
+            seatCount, 
+            config 
+        });
+        
+        await api.hallConfig(hallId, rowCount, seatCount, config);
+        
+        alert(`Конфигурация зала "${hallName}" успешно сохранена!`);
+        
+        // Обновляем данные
+        await loadAllData();
+    } catch (error) {
+        console.error('Ошибка сохранения конфигурации зала:', error);
+        alert('Ошибка сохранения конфигурации зала: ' + error.message);
+    }
+}
+
+
+// Функция для сохранения конфигурации цен
+async function savePriceConfiguration() {
+    const selectedHall = document.querySelector('.index-container:nth-child(3) .list-hall-num.active');
+    if (!selectedHall) {
+        alert('Пожалуйста, выберите зал для настройки цен');
+        return;
+    }
+
+    const hallId = selectedHall.dataset.hallId;
+    const hallName = selectedHall.dataset.fullName || selectedHall.textContent;
+    
+    // Получаем значения из правильных полей
+    const basicPriceInput = document.getElementById('basic-price-input');
+    const vipPriceInput = document.getElementById('vip-price-input');
+    
+    if (!basicPriceInput || !vipPriceInput) {
+        alert('Не найдены поля для ввода цен');
+        return;
+    }
+    
+    const basicPrice = parseInt(basicPriceInput.value) || 250;
+    const vipPrice = parseInt(vipPriceInput.value) || 350;
+
+    // Валидация
+    if (isNaN(basicPrice) || basicPrice <= 0) {
+        alert('Введите корректную цену для обычных мест (больше 0)');
+        basicPriceInput.focus();
+        return;
+    }
+    if (isNaN(vipPrice) || vipPrice <= 0) {
+        alert('Введите корректную цену для VIP мест (больше 0)');
+        vipPriceInput.focus();
+        return;
+    }
+
+    try {
+        console.log('Сохраняем цены:', { 
+            hallId, 
+            hallName, 
+            basicPrice, 
+            vipPrice 
+        });
+        
+        await api.hallSetPrice(hallId, basicPrice, vipPrice);
+        alert(`Цены для зала "${hallName}" успешно сохранены!`);
+        
+        // Обновляем данные
+        await loadAllData();
+    } catch (error) {
+        console.error('Ошибка сохранения цен:', error);
+        alert('Ошибка сохранения цен: ' + error.message);
+    }
+}
+
+
+
+window.addEventListener('resize', recalculateAllSessionPositions);
